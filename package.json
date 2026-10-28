@@ -1,0 +1,37 @@
+{
+  "name": "ologe-of-africa",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "cross-env NODE_OPTIONS=--use-system-ca next dev -p 3018",
+    "build": "next build",
+    "start": "next start -p 3018",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@fontsource-variable/fraunces": "^5.3.0",
+    "@fontsource-variable/hanken-grotesk": "^5.3.0",
+    "@fontsource-variable/source-serif-4": "^5.3.1",
+    "clsx": "^2.1.1",
+    "gsap": "^3.13.0",
+    "lenis": "^1.1.20",
+    "lucide-react": "^0.469.0",
+    "next": "15.4.11",
+    "react": "^19.2.1",
+    "react-dom": "^19.2.1",
+    "tailwind-merge": "^3.3.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "4.1.11",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "cross-env": "^10.1.0",
+    "eslint": "9.39.1",
+    "eslint-config-next": "15.4.11",
+    "postcss": "^8.5.6",
+    "tailwindcss": "4.1.11",
+    "typescript": "5.9.3"
+  }
+}
