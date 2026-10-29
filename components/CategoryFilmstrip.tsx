@@ -38,7 +38,7 @@ export default function CategoryFilmstrip() {
 
   return (
     <section ref={sectionRef} id="shop" className="relative overflow-hidden bg-cream py-20 md:py-0">
-      <div className="px-6 md:pointer-events-none md:absolute md:left-10 md:top-10 md:z-10 md:px-0">
+      <div className="px-6 md:pointer-events-none md:absolute md:left-10 md:top-28 md:z-10 md:px-0">
         <p className="eyebrow text-gold-deep">The House</p>
         <h2 className="font-display mt-2 text-[clamp(1.6rem,3vw,2.6rem)] text-ink">
           Browse every range
@@ -61,11 +61,13 @@ export default function CategoryFilmstrip() {
               href={`/shop/${c.key}`}
               className="group block w-[78vw] shrink-0 snap-start md:w-[34vw]"
             >
-              <div className="overflow-hidden bg-paper">
+              {/* Multiply sits the white/grey studio grounds into the ivory page
+                  instead of punching bright rectangles out of it. */}
+              <div className="overflow-hidden bg-cream">
                 <img
                   src={c.image}
                   alt={c.label}
-                  className="aspect-[4/5] w-full object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-105 md:aspect-auto md:h-[58vh]"
+                  className="aspect-[4/5] w-full object-cover mix-blend-multiply transition-transform duration-[1.2s] ease-out group-hover:scale-105 md:aspect-auto md:h-[58vh]"
                 />
               </div>
               <div className="mt-4 flex flex-col gap-1 md:flex-row md:items-end md:justify-between md:gap-4">

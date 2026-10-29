@@ -5,7 +5,6 @@ import TheEdit from "@/components/TheEdit";
 import AsWorn from "@/components/AsWorn";
 import OriginStory from "@/components/OriginStory";
 import GraceReveal from "@/components/GraceReveal";
-import ForHimHer from "@/components/ForHimHer";
 import Lookbook from "@/components/Lookbook";
 import HowToOrder from "@/components/HowToOrder";
 import Faq from "@/components/Faq";
@@ -25,7 +24,6 @@ export default function Home() {
         <AsWorn />
         <OriginStory />
         <GraceReveal />
-        <ForHimHer />
         <Lookbook />
         <HowToOrder />
         <Faq />

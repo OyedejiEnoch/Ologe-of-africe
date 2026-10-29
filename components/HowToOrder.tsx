@@ -38,7 +38,7 @@ export default function HowToOrder() {
   }, []);
 
   return (
-    <section className="bg-cream px-6 py-[var(--spacing-section)] md:px-10">
+    <section className="overflow-x-clip bg-cream px-6 py-[var(--spacing-section)] md:px-10">
       <div ref={ref} className="mx-auto max-w-[1200px]">
         <div className="max-w-[720px]">
           <p className="eyebrow text-gold-deep">How to order</p>
@@ -152,7 +152,7 @@ export default function HowToOrder() {
         {/* Step 03 — the practical promise resolves as a full campaign frame. */}
         <article
           data-step
-          className="relative left-1/2 mt-24 grid min-h-[700px] w-screen -translate-x-1/2 overflow-hidden bg-ink text-cream md:mt-40 md:min-h-[780px] md:grid-cols-[0.92fr_1.08fr]"
+          className="relative left-1/2 mt-24 grid min-h-[700px] w-screen -translate-x-1/2 overflow-hidden bg-ink-deep text-cream md:mt-40 md:min-h-[780px] md:grid-cols-[0.92fr_1.08fr]"
         >
           <div
             data-step-visual
@@ -164,8 +164,8 @@ export default function HowToOrder() {
               alt="A woman smiling in a colourful African print dress with black lace sleeves"
               className="h-full w-full object-cover object-[48%_center] md:object-top"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/60 to-ink/15 md:from-ink/45 md:via-transparent md:to-transparent" />
-            <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-transparent to-ink/10 md:from-ink/20" />
+            <div className="absolute inset-0 bg-gradient-to-r from-ink-deep via-ink-deep/60 to-ink-deep/15 md:from-ink-deep/45 md:via-transparent md:to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-ink-deep/80 via-transparent to-ink-deep/10 md:from-ink-deep/20" />
             <p
               className="absolute right-6 top-28 font-display text-[clamp(5rem,11vw,10rem)] leading-none text-cream/15 md:right-12"
               aria-hidden

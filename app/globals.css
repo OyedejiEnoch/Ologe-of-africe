@@ -2,18 +2,21 @@
 
 /* ------------------------------------------------------------------
    OLOGE of Africa — design tokens
-   Palette: white/cream ground · near-black text · gold as RARE accent.
+   Palette (v2, 2026-10-28): white ground · espresso-black ink, with
+   ink-deep for the darkest bands (footer, GRACE, order desk) · gold as the
+   rare accent — brighter on dark, deeper on light for contrast.
    Type:    Fraunces (display serif) · Hanken Grotesk (grotesk body).
 ------------------------------------------------------------------ */
 @theme {
-  --color-cream: #faf9f6;
-  --color-paper: #f2f0ea;
-  --color-ink: #0e0e0e;
-  --color-ink-soft: #2b2a28;
-  --color-muted: #8a887f;
-  --color-gold: #c6a15b;
-  --color-gold-deep: #a8823f;
-  --color-line: #e2ded4;
+  --color-cream: #ffffff; /* page ground — pure white (founder, 28 Oct); token name kept */
+  --color-paper: #f5f4f2; /* the one quiet surface tint, neutral not cream */
+  --color-ink: #1a1210;
+  --color-ink-soft: #3a2d27;
+  --color-muted: #7d6d60;
+  --color-gold: #c99a52;
+  --color-gold-deep: #8f6527;
+  --color-line: #e6e3df;
+  --color-ink-deep: #0e0a09;
 
   --font-display: "Fraunces Variable", Georgia, serif;
   --font-body: "Hanken Grotesk Variable", ui-sans-serif, system-ui, sans-serif;
@@ -22,7 +25,7 @@
 }
 
 :root {
-  --color-muted: #8a887f;
+  --color-muted: #7d6d60;
 }
 
 * {
@@ -95,13 +98,17 @@ a {
   line-height: 1.25;
 }
 
-.eyebrow {
-  font-family: var(--font-body);
-  font-size: 0.72rem;
-  letter-spacing: 0.32em;
-  text-transform: uppercase;
-  font-weight: 500;
-  color: var(--color-muted);
+/* In the components layer so utilities (text-gold, text-white/60, text-[…])
+   can override it — unlayered, its muted colour beat every colour class. */
+@layer components {
+  .eyebrow {
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--color-muted);
+  }
 }
 
 /* Thin gold rule used sparingly */
@@ -114,6 +121,71 @@ a {
     var(--color-gold) 70%,
     transparent
   );
+}
+
+/* Hero intro start states, set in CSS so the server-rendered frame never
+   flashes the finished layout before GSAP takes over. The fail-safe animation
+   lands everything at its end state if the script never runs; by 3.2s the
+   GSAP intro has already finished at those same values. */
+@media (prefers-reduced-motion: no-preference) {
+  .hero:not(.hero-settled) .hero-aperture {
+    clip-path: inset(18% 20% 30% 20%);
+    animation: hero-failsafe-clip 0.01s 3.2s forwards;
+  }
+  .hero:not(.hero-settled) .hero-letter {
+    transform: translateY(108%);
+    animation: hero-failsafe 0.01s 3.2s forwards;
+  }
+  .hero:not(.hero-settled) .hero-rise,
+  .hero:not(.hero-settled) .hero-scrim {
+    opacity: 0;
+    animation: hero-failsafe 0.01s 3.2s forwards;
+  }
+  @media (min-width: 768px) {
+    .hero:not(.hero-settled) .hero-aperture {
+      clip-path: inset(14% 37% 24% 37%);
+    }
+  }
+}
+
+@keyframes hero-failsafe {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes hero-failsafe-clip {
+  to {
+    clip-path: inset(0% 0% 0% 0%);
+  }
+}
+
+/* SplitText line masks stay in place after the rise, so give them room for
+   descenders (y, g, q) and stacked tone marks (Ò, ẹ́) without moving the text. */
+.split-line-mask {
+  padding: 0.12em 0 0.16em;
+  margin: -0.12em 0 -0.16em;
+}
+
+/* Page titles above the fold are hidden until the Motion layer has split them,
+   so the first paint never flashes the finished heading. Same 3.2s fail-safe
+   as the hero in case the script never runs. */
+@media (prefers-reduced-motion: no-preference) {
+  html:not(.motion-ready) main h1:not(.hero h1, [data-motion-off] h1) {
+    visibility: hidden;
+    animation: hero-failsafe-visible 0.01s 3.2s forwards;
+  }
+  html:not(.motion-ready) [data-plate] {
+    opacity: 0;
+    animation: hero-failsafe 0.01s 3.2s forwards;
+  }
+}
+
+@keyframes hero-failsafe-visible {
+  to {
+    visibility: visible;
+  }
 }
 
 /* Reveal-on-scroll base state (GSAP toggles .is-in) */

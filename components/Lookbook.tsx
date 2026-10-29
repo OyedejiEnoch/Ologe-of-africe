@@ -4,20 +4,63 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-// An airy 4×4 hairline grid on cream with looks placed in uneven cells and
-// plenty left empty — rhythm by imbalance. On entry the grid lines draw
-// themselves in, then each photo wipes open from the bottom.
-type Cell = { src: string; alt: string; place: string; mobile: string };
+// An editorial spread: six looks hung on a 12-column grid at uneven heights,
+// each captioned like a magazine plate. Columns drift at slightly different
+// speeds as the spread passes (a quiet parallax), and every photo wipes open
+// from the bottom as it arrives. Captions describe what is visible only — no
+// piece is claimed as worn without a confirmed match.
+type Look = { src: string; alt: string; caption: string; cell: string; shape: string; drift: number };
 
-const LOOKS: Cell[] = [
-  { src: "/media/lookbook/founder-yellow-frames.jpeg", alt: "A woman smiling in bold yellow-lens frames and a colourful patterned jacket", place: "md:col-start-4 md:row-start-1 md:row-span-2", mobile: "aspect-[4/5]" },
-  { src: "/media/lookbook/founder-patterned-look.jpeg", alt: "A woman smiling in a colourful African print dress with black lace sleeves", place: "md:col-start-2 md:row-start-2", mobile: "aspect-[4/5]" },
-  { src: "/media/lookbook/founder-yellow-frames-close.jpeg", alt: "A close portrait of a woman smiling in oversized yellow-lens frames", place: "md:col-start-1 md:row-start-3 md:row-span-2", mobile: "aspect-[4/5]" },
-  { src: "/media/hero.png", alt: "Four women in patterned dress and headwraps", place: "col-span-2 md:col-start-3 md:col-span-2 md:row-start-3", mobile: "aspect-[16/9]" },
-  { src: "/media/stills/hat-wide.jpg", alt: "A wide woven hat against a dark backdrop", place: "md:col-start-4 md:row-start-4", mobile: "aspect-[3/2]" },
+const LOOKS: Look[] = [
+  {
+    src: "/media/lookbook/founder-yellow-frames.jpeg",
+    alt: "A woman smiling in bold yellow-lens frames and a colourful patterned jacket",
+    caption: "Yellow lens, loud print",
+    cell: "col-span-2 md:col-span-4 md:col-start-5",
+    shape: "aspect-[4/5]",
+    drift: -40,
+  },
+  {
+    src: "/media/lookbook/founder-patterned-look.jpeg",
+    alt: "A woman smiling in a colourful African print dress with black lace sleeves",
+    caption: "Lace sleeve, bright ground",
+    cell: "md:col-span-3 md:col-start-10 md:mt-40",
+    shape: "aspect-[3/4]",
+    drift: 30,
+  },
+  {
+    src: "/media/stills/hat-still.jpg",
+    alt: "A woman in a wide woven hat and a patterned jacket against a dark backdrop",
+    caption: "The wide brim",
+    cell: "md:col-span-3 md:col-start-1 md:-mt-24",
+    shape: "aspect-[4/5]",
+    drift: 50,
+  },
+  {
+    src: "/media/stills/green-bag.jpg",
+    alt: "A woman in a green headwrap and red sunglasses holding a green bag",
+    caption: "Green on green",
+    cell: "col-span-2 md:col-span-4 md:col-start-5 md:mt-16",
+    shape: "aspect-[4/5]",
+    drift: -20,
+  },
+  {
+    src: "/media/lookbook/founder-yellow-frames-close.jpeg",
+    alt: "A close portrait of a woman smiling in oversized yellow-lens frames",
+    caption: "Up close",
+    cell: "md:col-span-3 md:col-start-10 md:mt-28",
+    shape: "aspect-[4/5]",
+    drift: 40,
+  },
+  {
+    src: "/media/stills/gele-gold.jpg",
+    alt: "A woman in a woven gele and layered gold chains",
+    caption: "Gold hour",
+    cell: "md:col-span-3 md:col-start-2 md:-mt-48",
+    shape: "aspect-[3/4]",
+    drift: -30,
+  },
 ];
-
-const GRID_STEPS = [0, 25, 50, 75, 100];
 
 export default function Lookbook() {
   const ref = useRef<HTMLDivElement>(null);
@@ -26,83 +69,63 @@ export default function Lookbook() {
     const el = ref.current;
     if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     gsap.registerPlugin(ScrollTrigger);
+    const desktop = window.matchMedia("(min-width: 768px)").matches;
     const ctx = gsap.context(() => {
-      const lines = gsap.timeline({ scrollTrigger: { trigger: el, start: "top 75%" } });
-      lines
-        .from("[data-line-v]", { scaleY: 0, transformOrigin: "top", duration: 1.2, ease: "power2.inOut", stagger: 0.08 }, 0)
-        .from("[data-line-h]", { scaleX: 0, transformOrigin: "left", duration: 1.2, ease: "power2.inOut", stagger: 0.08 }, 0.1);
-
-      // Each photo opens as it arrives, so on a tall phone layout the lower
-      // looks aren't spent before they're on screen.
-      gsap.utils.toArray<HTMLElement>("[data-look-cell]").forEach((cell) => {
-        const tl = gsap.timeline({ scrollTrigger: { trigger: cell, start: "top 88%" } });
+      gsap.utils.toArray<HTMLElement>("[data-look]").forEach((fig, i) => {
+        const frame = fig.querySelector("[data-look-frame]");
+        const tl = gsap.timeline({ scrollTrigger: { trigger: fig, start: "top 88%" } });
         tl.fromTo(
-          cell,
+          frame,
           { clipPath: "inset(100% 0% 0% 0%)" },
-          { clipPath: "inset(0% 0% 0% 0%)", duration: 1.3, ease: "power3.inOut" },
-          0.35
-        ).from(cell.querySelector("img"), { scale: 1.18, duration: 1.6, ease: "power3.out" }, 0.35);
+          { clipPath: "inset(0% 0% 0% 0%)", duration: 1.3, ease: "power3.inOut" }
+        ).from(fig.querySelector("img"), { scale: 1.18, duration: 1.6, ease: "power3.out" }, 0);
+
+        if (desktop) {
+          gsap.fromTo(
+            fig,
+            { y: LOOKS[i].drift },
+            { y: -LOOKS[i].drift, ease: "none", scrollTrigger: { trigger: el, start: "top bottom", end: "bottom top", scrub: true } }
+          );
+        }
       });
     }, el);
     return () => ctx.revert();
   }, []);
 
   return (
-    <section id="lookbook" className="bg-cream px-6 py-[var(--spacing-section)] md:px-10">
-      <div
-        ref={ref}
-        className="relative mx-auto grid max-w-[1400px] grid-flow-dense grid-cols-2 gap-3 md:grid-cols-4 md:gap-0 md:[grid-template-rows:repeat(4,clamp(11rem,17vw,16rem))]"
-      >
-        {/* Hairline grid (desktop) */}
-        <div aria-hidden className="pointer-events-none absolute inset-0 z-10 hidden md:block">
-          {GRID_STEPS.map((x) => (
-            <span
-              key={`v${x}`}
-              data-line-v
-              className="absolute top-0 h-full w-px bg-line"
-              style={{ left: `calc(${x}% - ${x === 100 ? 1 : 0}px)` }}
-            />
-          ))}
-          {GRID_STEPS.map((y) => (
-            <span
-              key={`h${y}`}
-              data-line-h
-              className="absolute left-0 h-px w-full bg-line"
-              style={{ top: `calc(${y}% - ${y === 100 ? 1 : 0}px)` }}
-            />
-          ))}
-        </div>
-
-        <div className="col-span-2 pb-8 md:col-start-1 md:row-start-1 md:p-8 md:pb-0">
+    <section id="lookbook" className="overflow-x-clip bg-cream px-6 py-[var(--spacing-section)] md:px-10">
+      <div ref={ref} className="mx-auto grid max-w-[1400px] grid-cols-2 gap-x-3 gap-y-10 md:grid-cols-12 md:gap-x-8 md:gap-y-0">
+        <div className="col-span-2 self-start md:col-span-4 md:pt-10">
           <p className="eyebrow text-gold-deep">Lookbook</p>
-          <h2 className="font-display mt-4 text-[clamp(2.2rem,4vw,3.6rem)] text-ink">
+          <h2 className="font-display mt-4 text-[clamp(2.4rem,4.6vw,4.2rem)] text-ink">
             Styled with <em className="italic">intention.</em>
           </h2>
-          <p className="mt-4 max-w-[38ch] text-ink-soft">
+          <p className="mt-5 max-w-[34ch] text-ink-soft">
             Fashion as a language — a few ways to wear the house, put together the OLÒGE way.
           </p>
           <a
+            data-magnetic
             href="/lookbook"
-            className="mt-6 inline-block text-sm font-medium text-ink underline-offset-8 hover:underline"
+            className="pressable mt-8 inline-flex min-h-12 items-center gap-3 rounded-full border border-ink px-6 text-xs font-medium uppercase tracking-[0.16em] text-ink hover:bg-ink hover:text-cream"
           >
-            View the lookbook →
+            View the lookbook <span aria-hidden>→</span>
           </a>
         </div>
 
-        {LOOKS.map((l) => (
-          <figure key={l.src} data-look-cell className={`relative overflow-hidden ${l.place}`}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={l.src}
-              alt={l.alt}
-              className={`w-full object-cover md:absolute md:inset-0 md:h-full ${l.mobile} md:aspect-auto`}
-            />
+        {LOOKS.map((l, i) => (
+          <figure key={l.src} data-look className={l.cell}>
+            <div data-look-frame className="overflow-hidden bg-paper">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={l.src} alt={l.alt} loading="lazy" className={`w-full object-cover ${l.shape}`} />
+            </div>
+            <figcaption className="mt-3 flex items-baseline gap-3">
+              <span className="font-body text-[0.62rem] tabular-nums tracking-[0.2em] text-gold-deep">
+                LOOK {String(i + 1).padStart(2, "0")}
+              </span>
+              <span className="font-display text-sm italic text-muted">{l.caption}</span>
+            </figcaption>
           </figure>
         ))}
-
-        <p className="hidden self-end p-8 font-display text-sm italic text-muted md:col-start-2 md:row-start-4 md:block">
-          Look 03 — the gold hour.
-        </p>
       </div>
     </section>
   );

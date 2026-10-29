@@ -17,9 +17,9 @@ const WORDS: Word[] = STATEMENT.split(" ").map((raw) => {
   return m ? { text: m[1], tail: m[2], hl: true } : { text: raw, tail: "", hl: false };
 });
 
-const INK = "#0e0e0e";
-const GOLD = "#a8823f";
-const PALE = "#d6d1c6";
+const INK = "#1a1210";
+const GOLD = "#8f6527";
+const PALE = "#dcd8d3";
 
 export default function Manifesto() {
   const ref = useRef<HTMLParagraphElement>(null);

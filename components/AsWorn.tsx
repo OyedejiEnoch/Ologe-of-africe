@@ -57,7 +57,7 @@ export default function AsWorn() {
           <figure
             key={l.src}
             data-look
-            className={`relative w-[38vw] shrink-0 border-[6px] border-cream bg-cream shadow-[0_30px_60px_-30px_rgba(14,14,14,0.45)] md:w-[19vw] md:max-w-[270px] ${
+            className={`relative w-[38vw] shrink-0 border-[6px] border-cream bg-cream shadow-[0_30px_60px_-30px_rgba(46,11,14,0.42)] md:w-[19vw] md:max-w-[270px] ${
               i === 0 ? "" : "-ml-[10vw] md:-ml-[3vw]"
             } ${i > 2 ? "hidden md:block" : ""}`}
             style={{ transform: `translateY(${l.lift}px) rotate(${l.rest}deg)`, zIndex: i % 2 === 1 ? 4 : 5 - i }}
@@ -66,6 +66,30 @@ export default function AsWorn() {
             <img src={l.src} alt={l.alt} className={`w-full object-cover ${l.shape}`} />
           </figure>
         ))}
+      </div>
+
+      {/* Eyewear routes for her and him (absorbed from the old split tiles). */}
+      <div className="mx-auto mt-16 flex max-w-[640px] flex-col items-center gap-6 text-center md:mt-24">
+        <p className="max-w-[40ch] text-ink-soft">
+          Cat-eyes, squares and rounds — chosen to frame a face, not hide it.
+        </p>
+        <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-3">
+          {[
+            { label: "Frames for her", href: "/shop/eyewear?for=her" },
+            { label: "Frames for him", href: "/shop/eyewear?for=him" },
+          ].map((l) => (
+            <a
+              key={l.href}
+              href={l.href}
+              className="group inline-flex min-h-11 items-center gap-2 font-display text-[clamp(1.4rem,2.2vw,1.9rem)] italic text-ink"
+            >
+              <span className="bg-[linear-gradient(currentColor,currentColor)] bg-[length:0%_1px] bg-left-bottom bg-no-repeat pb-1 transition-[background-size] duration-500 group-hover:bg-[length:100%_1px]">
+                {l.label}
+              </span>
+              <span aria-hidden className="not-italic transition-transform duration-300 group-hover:translate-x-1">→</span>
+            </a>
+          ))}
+        </div>
       </div>
     </section>
   );

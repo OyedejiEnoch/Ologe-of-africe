@@ -9,9 +9,10 @@ export default function JoinList() {
       <div className="relative mx-auto min-h-[520px] max-w-[1400px] overflow-hidden bg-ink">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
+          data-parallax="0.12"
           src="/media/stills/hat-wide.jpg"
           alt="A woman in a wide woven hat and patterned blazer"
-          className="absolute inset-0 h-full w-full object-cover object-[30%_center]"
+          className="absolute inset-0 h-full w-full scale-[1.16] object-cover object-[30%_center]"
         />
         <div className="absolute inset-0 bg-gradient-to-l from-ink/85 via-ink/45 to-transparent" />
 

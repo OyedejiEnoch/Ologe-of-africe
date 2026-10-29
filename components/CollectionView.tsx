@@ -1,8 +1,16 @@
-import Image from "next/image";
 import Link from "next/link";
 import CategoryNav from "@/components/CategoryNav";
-import ProductCard from "@/components/ProductCard";
-import { type CategoryKey, type Product } from "@/lib/catalog";
+import ProductPlate from "@/components/ProductPlate";
+import OrderBand from "@/components/OrderBand";
+import { CATEGORY_LABEL, PRODUCTS, type CategoryKey, type Product } from "@/lib/catalog";
+import { orderHref } from "@/lib/site";
+
+// Shared layout for /shop and /shop/[category]: an editorial masthead, sticky
+// range tabs, then the hairline cabinet of plates (bordered per cell so a short
+// last row simply ends on white). One lifestyle frame is hung into the grid on
+// pages that have enough pieces to carry it. Empty ranges get a designed
+// "being chosen" state that keeps the visitor moving rather than a dead end.
+type Editorial = { src: string; alt: string; caption: string; href: string };
 
 type CollectionViewProps = {
   title: string;
@@ -11,7 +19,10 @@ type CollectionViewProps = {
   active: CategoryKey | "all";
   image?: string;
   eyewearView?: "all" | "her" | "him";
+  editorial?: Editorial;
 };
+
+const CELL = "border-b border-r border-line";
 
 export default function CollectionView({
   title,
@@ -20,108 +31,149 @@ export default function CollectionView({
   active,
   image,
   eyewearView,
+  editorial,
 }: CollectionViewProps) {
+  const label = active === "all" ? null : CATEGORY_LABEL[active];
+  const showEditorial = editorial && products.length >= 6;
+  const before = showEditorial ? products.slice(0, 5) : products;
+  const after = showEditorial ? products.slice(5) : [];
+
   return (
-    <main className="bg-cream pt-[88px] text-ink">
-      <section className="mx-auto grid max-w-[1400px] border-x border-line lg:grid-cols-[1.05fr_.95fr]">
-        <div className="flex min-h-[50vh] flex-col justify-end px-6 py-14 md:px-10 md:py-20 lg:min-h-[64vh] lg:px-14">
-          <h1 className="max-w-[10ch] text-balance font-display text-[clamp(3.6rem,8vw,6rem)] leading-[0.88]">
-            {title}
-          </h1>
-          <p className="mt-8 max-w-[46ch] text-base leading-7 text-ink-soft md:text-lg">
-            {description}
+    <>
+      <main className="bg-cream pt-[84px] text-ink">
+        <header className="mx-auto grid max-w-[1400px] gap-10 px-6 pb-14 pt-16 md:grid-cols-12 md:px-10 md:pb-20 md:pt-24">
+          <div className="md:col-span-8">
+            <p className="eyebrow text-gold-deep">
+              <Link href="/shop" className="hover:text-ink">The house</Link>
+              {label && <span className="text-muted"> · {label}</span>}
+            </p>
+            <h1 className="font-display mt-5 max-w-[12ch] text-[clamp(3.4rem,8.6vw,8.25rem)] leading-[0.86] tracking-[-0.03em]">
+              {title}
+            </h1>
+          </div>
+          <div className="self-end md:col-span-4">
+            <p className="text-lg leading-relaxed text-ink-soft">{description}</p>
+            <p className="mt-6 border-t border-line pt-4 text-sm text-muted">
+              <span className="text-ink">{products.length > 0 ? `${products.length} ${products.length === 1 ? "piece" : "pieces"}` : "Coming soon"}</span>
+              {" · "}Priced on request, confirmed with you in chat.
+            </p>
+          </div>
+        </header>
+
+        <CategoryNav active={active} />
+
+        {active === "eyewear" && eyewearView && (
+          <div className="mx-auto flex max-w-[1400px] flex-wrap items-center justify-between gap-4 px-6 pt-8 md:px-10">
+            <p className="eyebrow">Frames for</p>
+            <nav aria-label="Eyewear edit" className="flex rounded-full border border-line p-1">
+              {([
+                { key: "all", label: "Everyone", href: "/shop/eyewear" },
+                { key: "her", label: "Her", href: "/shop/eyewear?for=her" },
+                { key: "him", label: "Him", href: "/shop/eyewear?for=him" },
+              ] as const).map((view) => (
+                <Link
+                  key={view.key}
+                  href={view.href}
+                  aria-current={eyewearView === view.key ? "page" : undefined}
+                  className={`inline-flex min-h-10 items-center rounded-full px-5 text-xs font-medium uppercase tracking-[0.15em] transition-colors ${
+                    eyewearView === view.key ? "bg-ink text-cream" : "text-muted hover:text-ink"
+                  }`}
+                >
+                  {view.label}
+                </Link>
+              ))}
+            </nav>
+          </div>
+        )}
+
+        <section className="mx-auto max-w-[1400px] px-6 py-10 md:px-10 md:py-14">
+          {products.length > 0 ? (
+            <div className="grid grid-cols-2 border-l border-t border-line md:grid-cols-3 lg:grid-cols-4">
+              {before.map((p, i) => (
+                <div key={p.slug} className={CELL}>
+                  <ProductPlate product={p} index={i} />
+                </div>
+              ))}
+              {showEditorial && (
+                <Link
+                  data-reveal-img
+                  href={editorial.href}
+                  className={`group relative col-span-2 block aspect-[4/3] overflow-hidden md:aspect-auto ${CELL}`}
+                >
+                  {/* Absolute so the photo fills the row the plates set, rather
+                      than its own height deciding the row. */}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={editorial.src}
+                    alt={editorial.alt}
+                    className="absolute inset-0 h-full w-full object-cover object-[50%_30%] transition-transform duration-[1.2s] ease-out group-hover:scale-[1.03]"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-ink-deep/75 via-transparent to-transparent" />
+                  <p className="absolute bottom-5 left-5 right-5 flex items-end justify-between gap-4 text-cream md:bottom-7 md:left-7 md:right-7">
+                    <span className="font-display text-[clamp(1.3rem,2.2vw,2rem)] italic leading-tight">{editorial.caption}</span>
+                    <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+                  </p>
+                </Link>
+              )}
+              {after.map((p, i) => (
+                <div key={p.slug} className={CELL}>
+                  <ProductPlate product={p} index={before.length + i} />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <BeingChosen label={label ?? "house"} image={image} />
+          )}
+        </section>
+      </main>
+      <OrderBand />
+    </>
+  );
+}
+
+// A range with nothing published yet: say so plainly, invite the request, and
+// show what the house already has.
+function BeingChosen({ label, image }: { label: string; image?: string }) {
+  const lower = label.toLowerCase();
+  return (
+    <div>
+      <div className="grid items-center gap-10 border border-line md:grid-cols-2">
+        {image && (
+          <div data-reveal-img className="overflow-hidden bg-cream">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={image} alt="" className="aspect-[4/3] w-full object-cover mix-blend-multiply md:aspect-square" />
+          </div>
+        )}
+        <div className="px-6 pb-10 md:px-12 md:py-12">
+          <p className="eyebrow text-gold-deep">Being chosen</p>
+          <h2 className="font-display mt-4 max-w-[14ch] text-[clamp(2.2rem,4.4vw,3.8rem)]">
+            The {lower} edit is taking shape.
+          </h2>
+          <p className="mt-5 max-w-[42ch] text-ink-soft">
+            The house is still selecting its {lower}. Tell us what you&rsquo;re looking for and we&rsquo;ll reply personally when something fits.
           </p>
-          <p className="mt-10 text-xs font-semibold uppercase tracking-[0.2em] text-muted">
-            {products.length} {products.length === 1 ? "piece" : "pieces"}
-          </p>
+          <a
+            href={orderHref()}
+            className="pressable mt-8 inline-flex min-h-12 items-center gap-3 rounded-full bg-ink px-7 text-xs font-medium uppercase tracking-[0.18em] text-cream hover:bg-ink-deep"
+          >
+            Ask about {lower} <span aria-hidden>→</span>
+          </a>
         </div>
+      </div>
 
-        {image ? (
-          <div className="relative min-h-[48vh] overflow-hidden border-t border-line lg:min-h-0 lg:border-l lg:border-t-0">
-            <Image src={image} alt="" fill priority className="object-cover" sizes="(max-width: 1023px) 100vw, 48vw" />
+      <div className="mt-20 flex items-end justify-between gap-6">
+        <h3 className="font-display text-[clamp(1.8rem,3vw,2.6rem)]">Meanwhile, in the house</h3>
+        <Link href="/shop" className="text-sm font-medium underline decoration-line underline-offset-8 hover:decoration-ink">
+          All pieces →
+        </Link>
+      </div>
+      <div className="mt-8 grid grid-cols-2 border-l border-t border-line lg:grid-cols-4">
+        {PRODUCTS.slice(0, 4).map((p, i) => (
+          <div key={p.slug} className={CELL}>
+            <ProductPlate product={p} index={i} />
           </div>
-        ) : (
-          <div className="relative hidden overflow-hidden border-l border-line bg-ink lg:block">
-            <Image
-              src="/media/categories/eyewear.jpg"
-              alt=""
-              fill
-              priority
-              className="object-cover opacity-80"
-              sizes="48vw"
-            />
-            <p className="absolute bottom-10 left-10 right-10 font-display text-4xl italic text-cream">
-              Chosen for the way a look comes together.
-            </p>
-          </div>
-        )}
-      </section>
-
-      <CategoryNav active={active} />
-
-      {active === "eyewear" && eyewearView && (
-        <nav aria-label="Eyewear edit" className="border-b border-line">
-          <div className="mx-auto flex max-w-[1400px] flex-wrap gap-x-8 px-6 py-5 md:px-10">
-            {([
-              { key: "all", label: "All frames", href: "/shop/eyewear" },
-              { key: "her", label: "For her", href: "/shop/eyewear?for=her" },
-              { key: "him", label: "For him", href: "/shop/eyewear?for=him" },
-            ] as const).map((view) => (
-              <Link
-                key={view.key}
-                href={view.href}
-                aria-current={eyewearView === view.key ? "page" : undefined}
-                className={`min-h-11 content-center border-b text-xs font-semibold uppercase tracking-[0.15em] transition-colors ${eyewearView === view.key ? "border-ink text-ink" : "border-transparent text-muted hover:text-ink"}`}
-              >
-                {view.label}
-              </Link>
-            ))}
-          </div>
-        </nav>
-      )}
-
-      <section className="mx-auto max-w-[1400px] border-x border-line px-6 py-16 md:px-10 md:py-24">
-        {products.length > 0 ? (
-          <div className="grid grid-cols-2 gap-x-3 gap-y-14 md:grid-cols-3 md:gap-x-5 md:gap-y-20 lg:gap-x-7">
-            {products.map((product) => (
-              <ProductCard key={product.slug} product={product} />
-            ))}
-          </div>
-        ) : (
-          <div className="grid min-h-[46vh] place-items-center py-16 text-center">
-            <div>
-              <h2 className="font-display text-[clamp(2.5rem,6vw,4.5rem)]">The edit is taking shape.</h2>
-              <p className="mx-auto mt-5 max-w-[48ch] text-ink-soft">
-                This collection has not been published yet. Explore the pieces already in the house, or enquire about what you are looking for.
-              </p>
-              <div className="mt-9 flex flex-wrap justify-center gap-3">
-                <Link href="/shop/eyewear" className="pressable rounded-full bg-ink px-6 py-3 text-xs font-semibold uppercase tracking-[0.15em] text-cream">
-                  Explore eyewear
-                </Link>
-                <Link href="/shop/fascinators" className="pressable rounded-full border border-ink px-6 py-3 text-xs font-semibold uppercase tracking-[0.15em] text-ink">
-                  See fascinators
-                </Link>
-              </div>
-            </div>
-          </div>
-        )}
-      </section>
-
-      {active !== "all" && (
-        <aside className="border-t border-line bg-paper px-6 py-16 md:px-10 md:py-20">
-          <div className="mx-auto flex max-w-[1400px] flex-col justify-between gap-8 md:flex-row md:items-end">
-            <p className="max-w-[18ch] font-display text-[clamp(2.4rem,5vw,4.5rem)] leading-[0.95]">
-              Not finished looking?
-            </p>
-            <div className="max-w-[38ch]">
-              <p className="text-ink-soft">Move through the full house and find the piece that changes the whole look.</p>
-              <Link href="/shop" className="mt-5 inline-block text-sm font-semibold underline decoration-gold underline-offset-8">
-                Shop all pieces →
-              </Link>
-            </div>
-          </div>
-        </aside>
-      )}
-    </main>
+        ))}
+      </div>
+    </div>
   );
 }

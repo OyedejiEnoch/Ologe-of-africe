@@ -40,7 +40,7 @@ export default function Footer() {
   }, []);
 
   return (
-    <footer className="overflow-hidden bg-ink text-cream">
+    <footer className="overflow-hidden bg-ink-deep text-cream">
       <div className="mx-auto grid max-w-[1400px] gap-12 px-6 pt-24 md:grid-cols-[1fr_1.4fr_1fr] md:px-10">
         <div>
           <p className="font-display text-3xl">OLÒGE</p>

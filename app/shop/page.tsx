@@ -16,6 +16,12 @@ export default function ShopPage() {
         description="A considered edit of frames, fascinators and finishing pieces — chosen for presence, personality and effortless grace."
         products={PRODUCTS}
         active="all"
+        editorial={{
+          src: "/media/lookbook/founder-yellow-frames.jpeg",
+          alt: "A woman smiling in bold yellow-lens frames and a colourful patterned jacket",
+          caption: "See the house as worn — the lookbook",
+          href: "/lookbook",
+        }}
       />
       <Footer />
     </>

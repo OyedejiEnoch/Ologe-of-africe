@@ -8,11 +8,12 @@ export default function OriginStory() {
         <div className="relative pb-16 md:pb-24">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
+            data-reveal-img
             src="/media/founder/founder-teal.jpg"
             alt="The founder of OLÒGE of Africa, smiling in a teal patterned dress"
             className="aspect-[4/5] w-[84%] object-cover object-top"
           />
-          <figure className="absolute bottom-0 right-0 w-[44%] border-[6px] border-cream bg-cream shadow-[0_30px_60px_-30px_rgba(14,14,14,0.45)]">
+          <figure data-parallax="0.22" className="absolute bottom-0 right-0 w-[44%] border-[6px] border-cream bg-cream shadow-[0_30px_60px_-30px_rgba(46,11,14,0.42)]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/media/founder/founder-suit.jpg"

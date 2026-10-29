@@ -44,11 +44,21 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
     <>
       <CollectionView
         title={eyewearView === "all" ? CATEGORY_LABEL[category] : `Frames for ${eyewearView}.`}
-        description={eyewearView === "all" ? copy.description : "Explore the frames in this edit. Each of the current styles is available to browse in both views."}
+        description={eyewearView === "all" ? copy.description : "Every frame in the current edit is chosen to suit both — so you'll see the full range here."}
         products={products}
         active={category}
         image={copy.image}
         eyewearView={category === "eyewear" ? eyewearView : undefined}
+        editorial={
+          category === "eyewear"
+            ? {
+                src: "/media/lookbook/founder-yellow-frames-close.jpeg",
+                alt: "A close portrait of a woman smiling in oversized yellow-lens frames",
+                caption: "Chosen to frame a face, not hide it",
+                href: "/lookbook",
+              }
+            : undefined
+        }
       />
       <Footer />
     </>

@@ -7,6 +7,7 @@ import "@fontsource-variable/source-serif-4/wght-italic.css";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
 import Nav from "@/components/Nav";
+import Motion from "@/components/Motion";
 
 export const metadata: Metadata = {
   title: "OLOGE of Africa — Fashion Meets Grace",
@@ -25,6 +26,7 @@ export default function RootLayout({
         <SmoothScroll />
         <Nav />
         {children}
+        <Motion />
       </body>
     </html>
   );
