@@ -26,6 +26,15 @@
 
 :root {
   --color-muted: #7d6d60;
+  /* Section breathing room: generous on desktop, tighter on phones where nine
+     rem of white above and below every band read as dead space. */
+  --spacing-section: 5.25rem;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --spacing-section: 9rem;
+  }
 }
 
 * {

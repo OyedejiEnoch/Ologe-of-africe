@@ -33,7 +33,7 @@ export default function AsWorn() {
           opacity: 1,
           ease: "power2.out",
           stagger: 0.08,
-          scrollTrigger: { trigger: el, start: "top 90%", end: "center 55%", scrub: 0.8 },
+          scrollTrigger: { trigger: el, start: "top 98%", end: "top 62%", scrub: 0.6 },
         }
       );
     }, el);

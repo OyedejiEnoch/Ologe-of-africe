@@ -35,6 +35,12 @@ export default function Motion() {
       return;
     }
     gsap.registerPlugin(ScrollTrigger, SplitText);
+    // Phones flick through content quickly: begin as the top edge enters the
+    // screen (not 8-12% up) and run ~20% faster, so nothing is still waiting
+    // when it is already mid-screen.
+    const phone = window.innerWidth < 768;
+    const at = (desktop: number) => (phone ? 100 : desktop);
+    const speed = phone ? 0.8 : 1;
     const free = (el: Element) => !el.closest(OFF);
     const all = <T extends Element>(sel: string) => gsap.utils.toArray<T>(sel).filter(free);
     const splits: SplitText[] = [];
@@ -53,10 +59,10 @@ export default function Motion() {
             onSplit: (self) =>
               gsap.from(self.lines, {
                 yPercent: 110,
-                duration: 1.15,
+                duration: 1.15 * speed,
                 ease: EASE,
-                stagger: 0.09,
-                scrollTrigger: { trigger: h, start: "top 90%", once: true },
+                stagger: 0.09 * speed,
+                scrollTrigger: { trigger: h, start: `top ${at(90)}%`, once: true },
               }),
           })
         );
@@ -69,9 +75,9 @@ export default function Motion() {
         gsap.from(el, {
           opacity: 0,
           letterSpacing: "0.62em",
-          duration: 1.2,
+          duration: 1.2 * speed,
           ease: "power3.out",
-          scrollTrigger: { trigger: el, start: "top 92%", once: true },
+          scrollTrigger: { trigger: el, start: `top ${at(92)}%`, once: true },
         });
       });
 
@@ -80,20 +86,20 @@ export default function Motion() {
           opacity: 0,
           y: 22,
           filter: "blur(6px)",
-          duration: 1,
-          delay: el.dataset.reveal === "after" ? 0.25 : 0,
+          duration: 1 * speed,
+          delay: (el.dataset.reveal === "after" ? 0.25 : 0) * speed,
           ease: "power3.out",
           clearProps: "filter",
-          scrollTrigger: { trigger: el, start: "top 92%", once: true },
+          scrollTrigger: { trigger: el, start: `top ${at(92)}%`, once: true },
         });
       });
 
       all<HTMLElement>("[data-reveal-img]").forEach((el) => {
         const img = el.querySelector("img") ?? el;
         gsap
-          .timeline({ scrollTrigger: { trigger: el, start: "top 88%", once: true } })
-          .fromTo(el, { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.3, ease: "power3.inOut" })
-          .from(img, { scale: 1.15, duration: 1.7, ease: "power3.out" }, 0);
+          .timeline({ scrollTrigger: { trigger: el, start: `top ${at(88)}%`, once: true } })
+          .fromTo(el, { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.3 * speed, ease: "power3.inOut" })
+          .from(img, { scale: 1.15, duration: 1.7 * speed, ease: "power3.out" }, 0);
       });
 
       all<HTMLElement>("[data-parallax]").forEach((el) => {
@@ -113,10 +119,10 @@ export default function Motion() {
       if (plates.length) {
         gsap.set(plates, { opacity: 0, y: 40 });
         ScrollTrigger.batch(plates, {
-          start: "top 92%",
+          start: `top ${at(92)}%`,
           once: true,
           onEnter: (batch) =>
-            gsap.to(batch, { opacity: 1, y: 0, duration: 1, ease: EASE, stagger: 0.08, overwrite: true }),
+            gsap.to(batch, { opacity: 1, y: 0, duration: 1 * speed, ease: EASE, stagger: 0.08 * speed, overwrite: true }),
         });
       }
 
@@ -166,7 +172,7 @@ export default function Motion() {
     <div
       ref={barRef}
       aria-hidden
-      className="pointer-events-none fixed inset-x-0 top-0 z-[60] h-[2px] origin-left scale-x-0 bg-gold motion-reduce:hidden"
+      className="pointer-events-none fixed inset-x-0 top-0 z-[90] h-[2px] origin-left scale-x-0 bg-gold motion-reduce:hidden"
     />
   );
 }

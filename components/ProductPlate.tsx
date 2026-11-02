@@ -6,12 +6,20 @@ import Corners from "@/components/Corners";
 // close in on hover. Lay plates in a `gap-px bg-line border border-line` grid so
 // the gaps read as hairlines. Price is deliberately absent — every page that
 // shows plates states "priced on request" once instead.
-export default function ProductPlate({ product: p, index }: { product: Product; index: number }) {
+export default function ProductPlate({
+  product: p,
+  index,
+  className = "",
+}: {
+  product: Product;
+  index: number;
+  className?: string;
+}) {
   return (
     <a
       data-plate
       href={`/shop/${p.category}/${p.slug}`}
-      className="group relative flex aspect-[4/5] flex-col bg-cream p-4 outline-offset-[-2px] md:p-6"
+      className={`group relative flex aspect-[4/5] flex-col bg-cream p-4 outline-offset-[-2px] md:p-6 ${className}`}
     >
       <Corners className="scale-[0.92] opacity-0 transition-[opacity,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-100 group-hover:opacity-100 group-focus-visible:scale-100 group-focus-visible:opacity-100" />
       <div className="flex items-baseline justify-between">

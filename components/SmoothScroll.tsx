@@ -5,6 +5,12 @@ import Lenis from "lenis";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+declare global {
+  interface Window {
+    __lenis?: Lenis; // read by Nav to pause scrolling while the mobile menu is open
+  }
+}
+
 // One Lenis instance driving both native smooth scroll and GSAP ScrollTrigger,
 // so pinned sections and reveals stay in lockstep with momentum scrolling.
 export default function SmoothScroll() {
@@ -24,6 +30,7 @@ export default function SmoothScroll() {
       smoothWheel: true,
     });
 
+    window.__lenis = lenis;
     lenis.on("scroll", ScrollTrigger.update);
 
     const raf = (time: number) => {
@@ -35,6 +42,7 @@ export default function SmoothScroll() {
     return () => {
       gsap.ticker.remove(raf);
       lenis.destroy();
+      delete window.__lenis;
     };
   }, []);
 

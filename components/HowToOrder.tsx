@@ -25,7 +25,7 @@ export default function HowToOrder() {
     gsap.registerPlugin(ScrollTrigger);
     const ctx = gsap.context(() => {
       gsap.utils.toArray<HTMLElement>("[data-step]").forEach((card) => {
-        const tl = gsap.timeline({ scrollTrigger: { trigger: card, start: "top 78%" } });
+        const tl = gsap.timeline({ scrollTrigger: { trigger: card, start: "top 94%" } });
         tl.from(card, { y: 70, opacity: 0, duration: 1.1, ease: "power3.out" })
           .from(card.querySelector("[data-step-visual]"), { x: 60, opacity: 0, duration: 1.1, ease: "power3.out" }, 0.15);
         const bubbles = card.querySelectorAll("[data-bubble]");

@@ -73,7 +73,7 @@ export default function Lookbook() {
     const ctx = gsap.context(() => {
       gsap.utils.toArray<HTMLElement>("[data-look]").forEach((fig, i) => {
         const frame = fig.querySelector("[data-look-frame]");
-        const tl = gsap.timeline({ scrollTrigger: { trigger: fig, start: "top 88%" } });
+        const tl = gsap.timeline({ scrollTrigger: { trigger: fig, start: "top 95%" } });
         tl.fromTo(
           frame,
           { clipPath: "inset(100% 0% 0% 0%)" },

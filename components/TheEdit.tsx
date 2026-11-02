@@ -3,7 +3,8 @@
 import { featuredProducts } from "@/lib/catalog";
 import ProductPlate from "@/components/ProductPlate";
 
-// A hairline cabinet of every piece: 4×2 on desktop, 2-up on phones, built from
+// A hairline cabinet of every piece: 4×2 on desktop, a swipe rail of large
+// plates on phones (so names and finishes are never cut off), built from
 // the shared ProductPlate (plates rise in via the site Motion layer). Price
 // lives once in the header (everything is on request) instead of on every plate.
 export default function TheEdit() {
@@ -30,11 +31,14 @@ export default function TheEdit() {
           </div>
         </div>
 
-        <div
-          className="mt-14 grid grid-cols-2 gap-px border border-line bg-line md:mt-20 md:grid-cols-4"
-        >
+        <div className="-mx-6 mt-12 flex snap-x snap-mandatory scroll-pl-6 gap-3 overflow-x-auto px-6 pb-1 [scrollbar-width:none] md:mx-0 md:mt-20 md:grid md:grid-cols-4 md:gap-px md:overflow-visible md:border md:border-line md:bg-line md:px-0 md:pb-0 [&::-webkit-scrollbar]:hidden">
           {featuredProducts().map((p, i) => (
-            <ProductPlate key={p.slug} product={p} index={i} />
+            <ProductPlate
+              key={p.slug}
+              product={p}
+              index={i}
+              className="!aspect-[1/1] w-[74vw] max-w-[22rem] shrink-0 snap-start border border-line md:!aspect-[4/5] md:w-auto md:max-w-none md:border-0"
+            />
           ))}
         </div>
       </div>

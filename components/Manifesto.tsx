@@ -36,7 +36,15 @@ export default function Manifesto() {
           color: (_i: number, w: HTMLElement) => (w.dataset.hl ? GOLD : INK),
           stagger: 0.05,
           ease: "none",
-          scrollTrigger: { trigger: el, start: "top 80%", end: "bottom 45%", scrub: true },
+          // Finish inking while the whole statement is still on screen: a phone shows
+          // it all at once, so ending at "bottom 45%" left the last lines pale.
+          scrollTrigger: {
+            trigger: el,
+            start: "top 92%",
+            end: () => (window.innerWidth < 768 ? "bottom 78%" : "bottom 55%"),
+            scrub: true,
+            invalidateOnRefresh: true,
+          },
         }
       );
     }, el);
