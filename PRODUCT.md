@@ -26,7 +26,7 @@ The site also needs an owner-facing Payload admin inside the same Next.js applic
 
 ## Capabilities and Constraints
 
-- The current catalog includes eyewear and fascinators; accessories, shoes, and bags remain valid categories without published products yet.
+- The current catalog includes jewellery, eyewear and fascinators; accessories, shoes, and bags remain valid categories without published products yet.
 - The six current eyewear products appear in both “for her” and “for him” views until the owner assigns more specific audiences.
 - Story, Lookbook and Contact have full public routes. Lookbook photos link to categories where relevant; no specific product is claimed as worn without a confirmed photo match.
 - The Contact form is a disabled preview until Payload can save enquiries. It must never report a successful submission before that integration exists.

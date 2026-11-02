@@ -8,6 +8,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 // letters rise out of a clipped baseline as the footer comes into view.
 const LINKS = [
   { label: "Shop", href: "/shop" },
+  { label: "Jewellery", href: "/shop/jewellery" },
   { label: "Eyewear", href: "/shop/eyewear" },
   { label: "Bags", href: "/shop/bags" },
   { label: "Shoes", href: "/shop/shoes" },
@@ -40,7 +41,7 @@ export default function Footer() {
   }, []);
 
   return (
-    <footer className="overflow-hidden bg-ink-deep text-cream">
+    <footer className="overflow-hidden bg-black text-cream">
       <div className="mx-auto grid max-w-[1400px] gap-12 px-6 pt-24 md:grid-cols-[1fr_1.4fr_1fr] md:px-10">
         <div>
           <p className="font-display text-3xl">OLÒGE</p>

@@ -3,26 +3,60 @@
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { CATEGORY_LABEL, type CategoryKey } from "@/lib/catalog";
 
-// Cover hero: the montage opens through a narrow portrait aperture on cream
-// (a door swinging open) and widens to full bleed while the footage settles
-// from a slight push-in. The OLÒGE wordmark then rises letter by letter along
+// Cover hero: two photographs crossfade on their own (no video). The frame
+// opens through a narrow portrait aperture on cream (a door swinging open)
+// and widens to full bleed while the photos settle from a slight push-in. The OLÒGE wordmark then rises letter by letter along
 // the bottom edge, edge to edge, like a magazine masthead set at the foot.
 // On scroll the frame still recedes into a rounded card while the next
 // section rides over it (this hero is sticky at z-0; the page below is z-10).
 // Scroll is scrubbed over numeric bounds (0 → one viewport): a sticky trigger
 // mis-measures, and Lenis already drives ScrollTrigger via SmoothScroll.
 
-// Ranges with real pieces lead; the rest are still valid category pages.
-const INDEX: CategoryKey[] = ["eyewear", "fascinators", "bags", "shoes", "accessories"];
 const WORD = ["O", "L", "Ò", "G", "E"];
 const EXPO = "expo.out";
+
+// The two hero photographs. Object positions keep each subject in frame when
+// a phone crops the wide image to a tall slice.
+const SLIDES = [
+  {
+    src: "/media/hero/hero-1.webp",
+    alt: "Four women in richly patterned African dress and headwraps, styling a green gele",
+    position: "object-[58%_30%] md:object-[50%_30%]",
+  },
+  {
+    src: "/media/hero/hero-2.webp",
+    alt: "A woman in a wide woven hat and a patterned blazer, against a dark studio backdrop",
+    position: "object-[50%_20%] md:object-[70%_20%]",
+  },
+];
+const HOLD_MS = 5500; // time each photo stays before the next fades in
 
 export default function Hero() {
   const rootRef = useRef<HTMLElement>(null);
   const frameRef = useRef<HTMLDivElement>(null);
   const [reduced, setReduced] = useState(false);
+  const [active, setActive] = useState(0);
+
+  // Advance on a timer. Skipped for reduced motion (first photo stays put) and
+  // paused while the tab is hidden so it never jumps ahead on return.
+  useEffect(() => {
+    if (reduced) return;
+    let timer: number | undefined;
+    const start = () => {
+      timer = window.setInterval(() => setActive((i) => (i + 1) % SLIDES.length), HOLD_MS);
+    };
+    const onVisibility = () => {
+      window.clearInterval(timer);
+      if (!document.hidden) start();
+    };
+    start();
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => {
+      window.clearInterval(timer);
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
+  }, [reduced]);
 
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -48,7 +82,7 @@ export default function Hero() {
           { clipPath: "inset(0% 0% 0% 0%)", duration: 1.6 },
           0.2
         )
-        .fromTo(".hero-video", { scale: 1.22 }, { scale: 1, duration: 2.2 }, 0.2)
+        .fromTo(".hero-slides", { scale: 1.22 }, { scale: 1, duration: 2.2 }, 0.2)
         .fromTo(".hero-scrim", { opacity: 0 }, { opacity: 1, duration: 1.2 }, 0.9)
         .fromTo(
           ".hero-letter",
@@ -98,27 +132,26 @@ export default function Hero() {
         style={{ transformOrigin: "center 42%" }}
       >
         <div className="hero-aperture absolute inset-0 overflow-hidden bg-ink">
-          {reduced ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src="/media/hero.png"
-              alt="OLÒGE of Africa — four women in richly patterned African dress and headwraps"
-              className="absolute inset-0 h-full w-full object-cover object-[50%_30%]"
-            />
-          ) : (
-            <video
-              className="hero-video absolute inset-0 h-full w-full object-cover object-[50%_30%]"
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="auto"
-              poster="/media/hero-poster.jpg"
-              aria-hidden
-            >
-              <source src="/media/hero.mp4" type="video/mp4" />
-            </video>
-          )}
+          {/* Both photos stay mounted and stacked; only opacity changes, so the
+              crossfade never waits on a download. The one on show settles from a
+              slow push-in; the one leaving eases back out underneath. */}
+          <div className="hero-slides absolute inset-0">
+            {SLIDES.map((slide, i) => (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                key={slide.src}
+                src={slide.src}
+                alt={slide.alt}
+                aria-hidden={i !== active}
+                fetchPriority={i === 0 ? "high" : "auto"}
+                className={`absolute inset-0 h-full w-full object-cover transition-[opacity,transform] ease-out motion-reduce:transition-none ${slide.position} ${
+                  i === active
+                    ? "scale-100 opacity-100 duration-[1600ms,7000ms]"
+                    : "scale-[1.06] opacity-0 duration-[1600ms,7000ms]"
+                }`}
+              />
+            ))}
+          </div>
 
           {/* Light touch: the footage carries the mood. Protection only where
               type sits — the nav band and the masthead at the foot. */}
@@ -161,30 +194,6 @@ export default function Hero() {
                 </a>
               </div>
             </div>
-
-            <nav aria-label="Shop by range" className="hidden md:col-span-4 md:col-start-9 md:block lg:col-span-3 lg:col-start-10">
-              <p className="hero-rise eyebrow mb-3 text-cream/60">The ranges</p>
-              <ul className="divide-y divide-cream/15 border-y border-cream/15">
-                {INDEX.map((key, i) => (
-                  <li key={key} className="hero-rise">
-                    <a
-                      href={`/shop/${key}`}
-                      className="group flex min-h-10 items-center justify-between py-2 text-sm text-cream/80 transition-colors hover:text-cream"
-                    >
-                      <span className="flex items-baseline gap-4">
-                        <span className="font-body text-[0.65rem] tabular-nums tracking-[0.2em] text-gold">
-                          {String(i + 1).padStart(2, "0")}
-                        </span>
-                        {CATEGORY_LABEL[key]}
-                      </span>
-                      <span aria-hidden className="translate-x-[-4px] opacity-0 transition-[opacity,transform] duration-300 group-hover:translate-x-0 group-hover:opacity-100">
-                        →
-                      </span>
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </nav>
           </div>
 
           <h1 className="relative flex items-end justify-between font-display text-[clamp(5.25rem,23.6vw,26rem)] font-[300] leading-[0.74] tracking-[-0.045em]">

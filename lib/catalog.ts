@@ -1,8 +1,8 @@
 // The catalog, shaped like the Payload `Products` collection it will become.
-// Photos are the client's own product shots. Names are plain descriptions and
-// prices are null ("Price on request") until she supplies her real ones.
+// Images are supplied by the owner. Names describe what is visible; materials,
+// availability and prices remain unconfirmed until the owner supplies details.
 
-export type CategoryKey = "accessories" | "eyewear" | "shoes" | "bags" | "fascinators";
+export type CategoryKey = "jewellery" | "accessories" | "eyewear" | "shoes" | "bags" | "fascinators";
 
 export type Product = {
   slug: string;
@@ -17,6 +17,7 @@ export type Product = {
 };
 
 export const CATEGORY_LABEL: Record<CategoryKey, string> = {
+  jewellery: "Jewellery",
   accessories: "Accessories",
   eyewear: "Eyewear",
   shoes: "Shoes",
@@ -25,8 +26,9 @@ export const CATEGORY_LABEL: Record<CategoryKey, string> = {
 };
 
 export const CATEGORY_KEYS: CategoryKey[] = [
-  "accessories",
+  "jewellery",
   "eyewear",
+  "accessories",
   "shoes",
   "bags",
   "fascinators",
@@ -36,6 +38,10 @@ export const CATEGORY_COPY: Record<
   CategoryKey,
   { description: string; image: string }
 > = {
+  jewellery: {
+    description: "Expressive earrings, cuffs and bangles chosen to bring a look into focus.",
+    image: "/products/jewellery/gold-fan-earrings.webp",
+  },
   accessories: {
     description: "Finishing pieces chosen for presence, ease and the small detail that completes a look.",
     image: "/media/categories/accessories.jpg",
@@ -106,7 +112,6 @@ export const PRODUCTS: Product[] = [
     price: null,
     description: "A slim oval in gunmetal with deep green lenses and squared metal temples.",
     image: "/products/oval-gunmetal.jpg",
-    featured: true,
   },
   {
     slug: "plum-saucer-fascinator",
@@ -127,7 +132,6 @@ export const PRODUCTS: Product[] = [
     price: null,
     description: "A clean, everyday rectangle in gloss black acetate, ready for your prescription.",
     image: "/products/rect-optical-black.jpg",
-    featured: true,
   },
   {
     slug: "oval-metal-black",
@@ -148,6 +152,90 @@ export const PRODUCTS: Product[] = [
     price: null,
     description: "The double-bridge round in vivid cobalt with smoked blue lenses.",
     image: "/products/round-browbar-cobalt.jpg",
+  },
+  {
+    slug: "gold-fan-earrings",
+    name: "Fan Sculptural Earrings",
+    variant: "Gold tone · pleated form",
+    category: "jewellery",
+    wearer: "her",
+    price: null,
+    description: "A mirrored pair of sweeping, pleated fan shapes in a warm gold tone.",
+    image: "/products/jewellery/gold-fan-earrings.webp",
+    featured: true,
+  },
+  {
+    slug: "pearl-white-cuff",
+    name: "Sculptural White Cuff",
+    variant: "Pearl white · marbled finish",
+    category: "jewellery",
+    wearer: "her",
+    price: null,
+    description: "A broad open cuff with a softly marbled white finish and rounded profile.",
+    image: "/products/jewellery/pearl-white-cuff.webp",
+    featured: true,
+  },
+  {
+    slug: "polka-dot-drop-earrings",
+    name: "Polka Dot Drop Earrings",
+    variant: "Black and white · geometric drop",
+    category: "jewellery",
+    wearer: "her",
+    price: null,
+    description: "Square white tops meet rounded diamond-shaped drops with bold black dots.",
+    image: "/products/jewellery/polka-dot-drop-earrings.webp",
+    featured: true,
+  },
+  {
+    slug: "amber-ivory-bangles",
+    name: "Amber & Ivory Bangles",
+    variant: "Two colours shown",
+    category: "jewellery",
+    wearer: "her",
+    price: null,
+    description: "Rounded bangles pictured in translucent amber and softly marbled ivory. Ask about your preferred colour.",
+    image: "/products/jewellery/amber-ivory-bangles.webp",
+  },
+  {
+    slug: "patterned-button-earrings",
+    name: "Patterned Button Earrings",
+    variant: "Red and monochrome styles shown",
+    category: "jewellery",
+    wearer: "her",
+    price: null,
+    description: "Fabric-look round earrings pictured in red and black, and black and white patterns. Ask about your preferred style.",
+    image: "/products/jewellery/patterned-button-earrings.webp",
+  },
+  {
+    slug: "gold-sculptural-earrings",
+    name: "Sculptural Gold Earrings",
+    variant: "Two designs shown",
+    category: "jewellery",
+    wearer: "her",
+    price: null,
+    description: "Two distinct gold-tone designs are pictured: folded hoop shapes and petal-like studs. Ask about the design you prefer.",
+    image: "/products/jewellery/gold-sculptural-earrings.webp",
+  },
+  {
+    slug: "silver-sphere-earrings",
+    name: "Silver Sphere Earrings",
+    variant: "Smooth and ribbed styles shown",
+    category: "jewellery",
+    wearer: "her",
+    price: null,
+    description: "Polished silver-tone spheres pictured in smooth and ribbed finishes. Ask about your preferred finish.",
+    image: "/products/jewellery/silver-sphere-earrings.webp",
+  },
+  {
+    slug: "colourful-hoop-earrings",
+    name: "Colourful Sculptural Hoops",
+    variant: "Cobalt and green styles shown",
+    category: "jewellery",
+    wearer: "her",
+    price: null,
+    description: "Rounded statement hoops pictured in vivid cobalt blue and translucent green. Ask about your preferred colour.",
+    image: "/products/jewellery/colourful-hoop-earrings.webp",
+    featured: true,
   },
 ];
 

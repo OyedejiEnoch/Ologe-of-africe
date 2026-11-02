@@ -1,6 +1,6 @@
 "use client";
 
-import { PRODUCTS } from "@/lib/catalog";
+import { featuredProducts } from "@/lib/catalog";
 import ProductPlate from "@/components/ProductPlate";
 
 // A hairline cabinet of every piece: 4×2 on desktop, 2-up on phones, built from
@@ -33,7 +33,7 @@ export default function TheEdit() {
         <div
           className="mt-14 grid grid-cols-2 gap-px border border-line bg-line md:mt-20 md:grid-cols-4"
         >
-          {PRODUCTS.map((p, i) => (
+          {featuredProducts().map((p, i) => (
             <ProductPlate key={p.slug} product={p} index={i} />
           ))}
         </div>

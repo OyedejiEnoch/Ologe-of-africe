@@ -11,8 +11,9 @@ export type Category = {
 // Her ranges, in the order she named them. Categories will become
 // owner-managed records in Payload; this is the seed order.
 export const CATEGORIES: Category[] = [
-  { key: "accessories", label: "Accessories", caption: "The finishing note", image: "/media/categories/accessories.jpg" },
+  { key: "jewellery", label: "Jewellery", caption: "The finishing light", image: "/products/jewellery/gold-fan-earrings.webp" },
   { key: "eyewear", label: "Eyewear", caption: "For him & her", image: "/media/categories/eyewear.jpg" },
+  { key: "accessories", label: "Accessories", caption: "The finishing note", image: "/media/categories/accessories.jpg" },
   { key: "shoes", label: "Shoes", caption: "Every step, considered", image: "/media/categories/shoes.jpg" },
   { key: "bags", label: "Bags", caption: "Carried with grace", image: "/media/categories/bags.jpg" },
   { key: "fascinators", label: "Fascinators", caption: "The crown of an outfit", image: "/media/categories/fascinators.jpg" },

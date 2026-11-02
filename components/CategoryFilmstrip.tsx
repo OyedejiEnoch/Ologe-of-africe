@@ -50,7 +50,7 @@ export default function CategoryFilmstrip() {
       <div className="mt-10 snap-x snap-mandatory scroll-pl-6 overflow-x-auto [scrollbar-width:none] md:mt-0 md:overflow-visible [&::-webkit-scrollbar]:hidden">
         <div
           ref={trackRef}
-          className="flex w-max gap-4 px-6 md:h-[100svh] md:items-center md:gap-10 md:px-10"
+          className="flex w-max gap-4 px-6 md:h-[100svh] md:items-center md:gap-10 md:px-10 md:pt-44"
         >
           {/* Leading spacer so the first card clears the section label */}
           <div className="hidden w-[22vw] shrink-0 md:block" aria-hidden />
@@ -67,7 +67,7 @@ export default function CategoryFilmstrip() {
                 <img
                   src={c.image}
                   alt={c.label}
-                  className="aspect-[4/5] w-full object-cover mix-blend-multiply transition-transform duration-[1.2s] ease-out group-hover:scale-105 md:aspect-auto md:h-[58vh]"
+                  className="aspect-[4/5] w-full object-cover mix-blend-multiply transition-transform duration-[1.2s] ease-out group-hover:scale-105 md:aspect-auto md:h-[min(58vh,calc(100svh-19rem))]"
                 />
               </div>
               <div className="mt-4 flex flex-col gap-1 md:flex-row md:items-end md:justify-between md:gap-4">

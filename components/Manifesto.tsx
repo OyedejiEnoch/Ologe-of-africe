@@ -18,7 +18,7 @@ const WORDS: Word[] = STATEMENT.split(" ").map((raw) => {
 });
 
 const INK = "#1a1210";
-const GOLD = "#8f6527";
+const GOLD = "#976b00";
 const PALE = "#dcd8d3";
 
 export default function Manifesto() {

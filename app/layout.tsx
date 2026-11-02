@@ -12,7 +12,7 @@ import Motion from "@/components/Motion";
 export const metadata: Metadata = {
   title: "OLOGE of Africa — Fashion Meets Grace",
   description:
-    "OLOGE of Africa — a house of fashion for every lover of style. Accessories, eyewear, shoes, bags and fascinators, born of a father's love and a lifetime of effortless grace.",
+    "OLOGE of Africa — a house of fashion for every lover of style. Jewellery, accessories, eyewear, shoes, bags and fascinators, born of a father's love and a lifetime of effortless grace.",
 };
 
 export default function RootLayout({

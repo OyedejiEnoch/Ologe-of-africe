@@ -2,6 +2,7 @@ import Link from "next/link";
 import CategoryNav from "@/components/CategoryNav";
 import ProductPlate from "@/components/ProductPlate";
 import OrderBand from "@/components/OrderBand";
+import JewellerySpotlight from "@/components/JewellerySpotlight";
 import { CATEGORY_LABEL, PRODUCTS, type CategoryKey, type Product } from "@/lib/catalog";
 import { orderHref } from "@/lib/site";
 
@@ -85,6 +86,8 @@ export default function CollectionView({
             </nav>
           </div>
         )}
+
+        {active === "jewellery" && products.length > 0 && <JewellerySpotlight />}
 
         <section className="mx-auto max-w-[1400px] px-6 py-10 md:px-10 md:py-14">
           {products.length > 0 ? (

@@ -5,7 +5,7 @@ import { PRODUCTS } from "@/lib/catalog";
 
 export const metadata: Metadata = {
   title: "Shop the House — OLÒGE of Africa",
-  description: "Discover eyewear and occasion pieces curated by OLÒGE of Africa.",
+  description: "Discover jewellery, eyewear and occasion pieces curated by OLÒGE of Africa.",
 };
 
 export default function ShopPage() {
