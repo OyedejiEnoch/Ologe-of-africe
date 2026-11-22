@@ -22,15 +22,15 @@ The site pairs editorial fashion storytelling with a direct, human ordering proc
 
 Visitors browse the house, move through product categories and individual pieces, then enquire through WhatsApp to confirm availability, price, delivery, and reservation before payment.
 
-The site also needs an owner-facing Payload admin inside the same Next.js application. The planned content store is MongoDB Atlas, with Cloudflare R2 for uploaded images. Hosting and the Atlas choice still need final confirmation before setup.
+The owner manages the site from a Payload admin at `/admin`, inside the same Next.js application: products (photos, video, price, status), enquiries, the mailing list, orders, and business details such as the WhatsApp number. Content is stored in MongoDB Atlas and uploads in Cloudflare R2. Without a database connection the site falls back to the starter catalog in `lib/catalog.ts`.
 
 ## Capabilities and Constraints
 
 - The current catalog includes jewellery, eyewear and fascinators; accessories, shoes, and bags remain valid categories without published products yet.
 - The six current eyewear products appear in both “for her” and “for him” views until the owner assigns more specific audiences.
 - Story, Lookbook and Contact have full public routes. Lookbook photos link to categories where relevant; no specific product is claimed as worn without a confirmed photo match.
-- The Contact form is a disabled preview until Payload can save enquiries. It must never report a successful submission before that integration exists.
-- Prices are not confirmed and must remain “Price on request.”
+- The Contact form saves to the Payload `enquiries` collection and the newsletter to `subscribers`. Both report an honest error, never a false success, when the database is unavailable.
+- Prices are set by the owner in /admin; a product with no price shows “Price on request.”
 - Product ordering is an enquiry flow, not an online checkout.
 - The existing application is a Next.js App Router site and must remain responsive across desktop and mobile web.
 - The WhatsApp destination is not yet configured; calls to action must keep the existing safe fallback until a number is supplied.

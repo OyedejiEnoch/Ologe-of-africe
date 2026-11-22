@@ -1,19 +1,19 @@
 "use client";
 
-import { featuredProducts } from "@/lib/catalog";
+import type { Product } from "@/lib/catalog";
 import ProductPlate from "@/components/ProductPlate";
 
 // A hairline cabinet of every piece: 4×2 on desktop, a swipe rail of large
 // plates on phones (so names and finishes are never cut off), built from
 // the shared ProductPlate (plates rise in via the site Motion layer). Price
 // lives once in the header (everything is on request) instead of on every plate.
-export default function TheEdit() {
+export default function TheEdit({ products }: { products: Product[] }) {
   return (
     <section className="bg-cream px-6 pt-[var(--spacing-section)] md:px-10">
       <div className="mx-auto max-w-[1400px]">
         <div className="grid gap-8 md:grid-cols-12 md:items-end">
           <div className="md:col-span-7">
-            <p className="eyebrow text-gold-deep">The Edit</p>
+            <p className="eyebrow text-ink">The Edit</p>
             <h2 className="font-display mt-4 text-[clamp(2.4rem,5vw,4.6rem)] text-ink">
               Pieces worth a <em className="italic">second look.</em>
             </h2>
@@ -32,7 +32,7 @@ export default function TheEdit() {
         </div>
 
         <div className="-mx-6 mt-12 flex snap-x snap-mandatory scroll-pl-6 gap-3 overflow-x-auto px-6 pb-1 [scrollbar-width:none] md:mx-0 md:mt-20 md:grid md:grid-cols-4 md:gap-px md:overflow-visible md:border md:border-line md:bg-line md:px-0 md:pb-0 [&::-webkit-scrollbar]:hidden">
-          {featuredProducts().map((p, i) => (
+          {products.map((p, i) => (
             <ProductPlate
               key={p.slug}
               product={p}

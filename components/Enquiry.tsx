@@ -6,7 +6,7 @@ export default function Enquiry() {
     <section id="contact" className="bg-cream px-6 py-[var(--spacing-section)] md:px-10">
       <div className="mx-auto grid max-w-[1400px] gap-16 md:grid-cols-2 md:items-center">
         <div>
-          <p className="eyebrow text-gold-deep">Say hello</p>
+          <p className="eyebrow text-ink">Say hello</p>
           <h2 className="font-display mt-4 text-[clamp(2.2rem,5vw,4rem)] text-ink">
             Looking for
             <br />
@@ -31,7 +31,7 @@ export default function Enquiry() {
             <textarea
               rows={4}
               placeholder="A fascinator for a wedding in December…"
-              className="resize-none border border-line bg-transparent px-4 py-3 text-ink outline-none transition-colors focus:border-gold"
+              className="resize-none border border-line bg-transparent px-4 py-3 text-ink outline-none transition-colors focus:border-ink"
             />
           </label>
           <button
@@ -55,7 +55,7 @@ function Field({ label, placeholder }: { label: string; placeholder: string }) {
       <input
         type="text"
         placeholder={placeholder}
-        className="border border-line bg-transparent px-4 py-3 text-ink outline-none transition-colors focus:border-gold"
+        className="border border-line bg-transparent px-4 py-3 text-ink outline-none transition-colors focus:border-ink"
       />
     </label>
   );

@@ -1,6 +1,8 @@
-// The catalog, shaped like the Payload `Products` collection it will become.
-// Images are supplied by the owner. Names describe what is visible; materials,
-// availability and prices remain unconfirmed until the owner supplies details.
+// Catalog types, ranges and the starter catalog. Live products come from the
+// Payload `products` collection (see lib/cms.ts); PRODUCTS below is what
+// `npm run seed` loads into the database, and what the site shows if the
+// database can't be reached. Names describe what is visible; prices stay
+// "on request" until the owner sets them in /admin.
 
 export type CategoryKey = "jewellery" | "accessories" | "eyewear" | "shoes" | "bags" | "fascinators";
 
@@ -12,7 +14,12 @@ export type Product = {
   wearer?: "him" | "her" | "both";
   price: number | null; // null → "Price on request"
   description: string;
-  image: string; // cut-out on a transparent/white ground
+  image: string; // cut-out on a transparent/white ground (grid size)
+  imageLarge?: string; // full-size photo for the product page
+  imageAlt?: string;
+  gallery?: { src: string; alt: string }[];
+  video?: string;
+  status?: "available" | "sold-out";
   featured?: boolean;
 };
 
@@ -239,13 +246,13 @@ export const PRODUCTS: Product[] = [
   },
 ];
 
-export const featuredProducts = (): Product[] => PRODUCTS.filter((p) => p.featured);
+export const featuredProducts = (list: Product[] = PRODUCTS): Product[] => list.filter((p) => p.featured);
 
 export const isCategoryKey = (value: string): value is CategoryKey =>
   CATEGORY_KEYS.includes(value as CategoryKey);
 
-export const productsByCategory = (category: CategoryKey): Product[] =>
-  PRODUCTS.filter((product) => product.category === category);
+export const productsByCategory = (category: CategoryKey, list: Product[] = PRODUCTS): Product[] =>
+  list.filter((product) => product.category === category);
 
-export const productBySlug = (category: CategoryKey, slug: string): Product | undefined =>
-  PRODUCTS.find((product) => product.category === category && product.slug === slug);
+export const productBySlug = (category: CategoryKey, slug: string, list: Product[] = PRODUCTS): Product | undefined =>
+  list.find((product) => product.category === category && product.slug === slug);

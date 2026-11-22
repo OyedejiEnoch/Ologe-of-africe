@@ -3,8 +3,9 @@ import CategoryNav from "@/components/CategoryNav";
 import ProductPlate from "@/components/ProductPlate";
 import OrderBand from "@/components/OrderBand";
 import JewellerySpotlight from "@/components/JewellerySpotlight";
-import { CATEGORY_LABEL, PRODUCTS, type CategoryKey, type Product } from "@/lib/catalog";
+import { CATEGORY_LABEL, type CategoryKey, type Product } from "@/lib/catalog";
 import { orderHref } from "@/lib/site";
+import { getProducts, getSettings } from "@/lib/cms";
 
 // Shared layout for /shop and /shop/[category]: an editorial masthead, sticky
 // range tabs, then the hairline cabinet of plates (bordered per cell so a short
@@ -44,7 +45,7 @@ export default function CollectionView({
       <main className="bg-cream pt-[84px] text-ink">
         <header className="mx-auto grid max-w-[1400px] gap-10 px-6 pb-14 pt-16 md:grid-cols-12 md:px-10 md:pb-20 md:pt-24">
           <div className="md:col-span-8">
-            <p className="eyebrow text-gold-deep">
+            <p className="eyebrow text-ink">
               <Link href="/shop" className="hover:text-ink">The house</Link>
               {label && <span className="text-muted"> · {label}</span>}
             </p>
@@ -136,7 +137,8 @@ export default function CollectionView({
 
 // A range with nothing published yet: say so plainly, invite the request, and
 // show what the house already has.
-function BeingChosen({ label, image }: { label: string; image?: string }) {
+async function BeingChosen({ label, image }: { label: string; image?: string }) {
+  const [house, site] = await Promise.all([getProducts(), getSettings()]);
   const lower = label.toLowerCase();
   return (
     <div>
@@ -148,7 +150,7 @@ function BeingChosen({ label, image }: { label: string; image?: string }) {
           </div>
         )}
         <div className="px-6 pb-10 md:px-12 md:py-12">
-          <p className="eyebrow text-gold-deep">Being chosen</p>
+          <p className="eyebrow text-ink">Being chosen</p>
           <h2 className="font-display mt-4 max-w-[14ch] text-[clamp(2.2rem,4.4vw,3.8rem)]">
             The {lower} edit is taking shape.
           </h2>
@@ -156,7 +158,7 @@ function BeingChosen({ label, image }: { label: string; image?: string }) {
             The house is still selecting its {lower}. Tell us what you&rsquo;re looking for and we&rsquo;ll reply personally when something fits.
           </p>
           <a
-            href={orderHref()}
+            href={orderHref(undefined, site.whatsapp)}
             className="pressable mt-8 inline-flex min-h-12 items-center gap-3 rounded-full bg-ink px-7 text-xs font-medium uppercase tracking-[0.18em] text-cream hover:bg-ink-deep"
           >
             Ask about {lower} <span aria-hidden>→</span>
@@ -171,7 +173,7 @@ function BeingChosen({ label, image }: { label: string; image?: string }) {
         </Link>
       </div>
       <div className="mt-8 grid grid-cols-2 border-l border-t border-line lg:grid-cols-4">
-        {PRODUCTS.slice(0, 4).map((p, i) => (
+        {house.slice(0, 4).map((p, i) => (
           <div key={p.slug} className={CELL}>
             <ProductPlate product={p} index={i} />
           </div>

@@ -41,9 +41,9 @@ export default function AsWorn() {
   }, []);
 
   return (
-    <section className="overflow-hidden bg-cream px-6 py-[var(--spacing-section)] md:px-10">
+    <section className="overflow-hidden bg-ivory px-6 py-[var(--spacing-section)] md:px-10">
       <div className="mx-auto max-w-[1400px] text-center">
-        <p className="eyebrow text-gold-deep">As worn</p>
+        <p className="eyebrow text-ink">As worn</p>
         <h2 className="font-display mt-4 text-[clamp(2rem,4vw,3.4rem)] text-ink">
           Worn with a little <em className="italic">shakara.</em>
         </h2>

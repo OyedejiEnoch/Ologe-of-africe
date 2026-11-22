@@ -29,17 +29,17 @@ const LOOKS: Look[] = [
     drift: 30,
   },
   {
-    src: "/media/stills/hat-still.jpg",
-    alt: "A woman in a wide woven hat and a patterned jacket against a dark backdrop",
-    caption: "The wide brim",
+    src: "/media/editorial/sculpted-headpiece.webp",
+    alt: "A woman in a sculpted black headpiece of looped bands and a white halter",
+    caption: "The sculpted crown",
     cell: "md:col-span-3 md:col-start-1 md:-mt-24",
     shape: "aspect-[4/5]",
     drift: 50,
   },
   {
-    src: "/media/stills/green-bag.jpg",
-    alt: "A woman in a green headwrap and red sunglasses holding a green bag",
-    caption: "Green on green",
+    src: "/media/editorial/golden-hour-frames.webp",
+    alt: "A woman in tortoiseshell sunglasses, a gold sunburst earring and a gold-banded necklace, the sun setting behind her",
+    caption: "Golden hour",
     cell: "col-span-2 md:col-span-4 md:col-start-5 md:mt-16",
     shape: "aspect-[4/5]",
     drift: -20,
@@ -53,9 +53,9 @@ const LOOKS: Look[] = [
     drift: 40,
   },
   {
-    src: "/media/stills/gele-gold.jpg",
-    alt: "A woman in a woven gele and layered gold chains",
-    caption: "Gold hour",
+    src: "/media/editorial/gele-gold-light.webp",
+    alt: "A woman in a yellow patterned gele and long gold earrings in warm light",
+    caption: "Gele and gold",
     cell: "md:col-span-3 md:col-start-2 md:-mt-48",
     shape: "aspect-[3/4]",
     drift: -30,
@@ -96,7 +96,7 @@ export default function Lookbook() {
     <section id="lookbook" className="overflow-x-clip bg-cream px-6 py-[var(--spacing-section)] md:px-10">
       <div ref={ref} className="mx-auto grid max-w-[1400px] grid-cols-2 gap-x-3 gap-y-10 md:grid-cols-12 md:gap-x-8 md:gap-y-0">
         <div className="col-span-2 self-start md:col-span-4 md:pt-10">
-          <p className="eyebrow text-gold-deep">Lookbook</p>
+          <p className="eyebrow text-ink">Lookbook</p>
           <h2 className="font-display mt-4 text-[clamp(2.4rem,4.6vw,4.2rem)] text-ink">
             Styled with <em className="italic">intention.</em>
           </h2>
@@ -119,7 +119,7 @@ export default function Lookbook() {
               <img src={l.src} alt={l.alt} loading="lazy" className={`w-full object-cover ${l.shape}`} />
             </div>
             <figcaption className="mt-3 flex items-baseline gap-3">
-              <span className="font-body text-[0.62rem] tabular-nums tracking-[0.2em] text-gold-deep">
+              <span className="font-body text-[0.62rem] tabular-nums tracking-[0.2em] text-muted">
                 LOOK {String(i + 1).padStart(2, "0")}
               </span>
               <span className="font-display text-sm italic text-muted">{l.caption}</span>

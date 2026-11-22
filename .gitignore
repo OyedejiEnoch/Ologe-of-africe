@@ -32,3 +32,6 @@ Thumbs.db
 # MotionSites example prompts and media are licensed for use, not redistribution
 /.agents/skills/motionsites-web-builder/examples/
 /.agents/skills/motionsites-web-builder/media/
+
+# Payload: local upload folder (used only when R2 is not configured) and generated types
+/media/

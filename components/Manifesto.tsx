@@ -54,7 +54,7 @@ export default function Manifesto() {
   return (
     <section className="bg-cream px-6 py-[var(--spacing-section)] md:px-10">
       <div className="mx-auto grid max-w-[1400px] gap-10 md:grid-cols-[180px_1fr]">
-        <p className="eyebrow pt-3 text-gold-deep">The house</p>
+        <p className="eyebrow pt-3 text-ink">The house</p>
         <div>
           <p
             ref={ref}
@@ -65,7 +65,7 @@ export default function Manifesto() {
                 <span
                   data-w
                   data-hl={w.hl ? "1" : undefined}
-                  className={w.hl ? "italic text-gold-deep" : undefined}
+                  className={w.hl ? "italic text-ink" : undefined}
                 >
                   {w.text}
                 </span>

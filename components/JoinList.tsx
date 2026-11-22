@@ -1,39 +1,54 @@
 "use client";
 
-// Newsletter banner over the woven-hat look; copy sits in the dark backdrop to
-// the right of the subject. Submitting is a no-op until the Payload
-// `Subscribers` collection exists — it must not pretend to have signed anyone up.
+import { useActionState } from "react";
+import { subscribe, type FormState } from "@/lib/actions";
+
+// Newsletter band, split like the luxury references: an editorial photograph
+// on the left, the sign-up on ink on the right (stacks on phones). Sign-ups are
+// saved to the Payload `subscribers` collection through a server action.
+const initial: FormState = { status: "idle" };
+
 export default function JoinList() {
+  const [state, action, pending] = useActionState(subscribe, initial);
   return (
     <section className="bg-cream px-6 pb-[var(--spacing-section)] md:px-10">
-      <div className="relative mx-auto min-h-[520px] max-w-[1400px] overflow-hidden bg-ink">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          data-parallax="0.12"
-          src="/media/stills/hat-wide.jpg"
-          alt="A woman in a wide woven hat and patterned blazer"
-          className="absolute inset-0 h-full w-full scale-[1.16] object-cover object-[30%_center]"
-        />
-        <div className="absolute inset-0 bg-gradient-to-l from-ink/85 via-ink/45 to-transparent" />
+      <div className="mx-auto grid max-w-[1400px] overflow-hidden bg-ink md:min-h-[560px] md:grid-cols-2">
+        <div className="relative aspect-[4/3] overflow-hidden md:aspect-auto">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            data-parallax="0.08"
+            src="/media/editorial/spiral-hat.webp"
+            alt="A woman under a black sculpted hat of coiled bands, red lips, black roll-neck"
+            className="absolute inset-0 h-full w-full scale-[1.1] object-cover object-[50%_40%]"
+          />
+        </div>
 
-        <div className="relative ml-auto flex min-h-[520px] max-w-[560px] flex-col justify-center p-8 text-cream md:p-14">
-          <p className="eyebrow text-gold">The list</p>
+        <div className="relative flex flex-col justify-center p-8 text-cream md:p-14 lg:p-20">
+          <p className="eyebrow text-cream/55">The list</p>
           <h2 className="font-display mt-4 text-[clamp(2.2rem,4.4vw,3.8rem)]">
-            Be first to <em className="italic text-gold">the new pieces.</em>
+            Be first to <em className="italic">the new pieces.</em>
           </h2>
           <p className="mt-5 max-w-[40ch] text-cream/75">
             New arrivals, restocks and the odd styling note — never more than you’d want.
           </p>
 
+          {state.status === "ok" ? (
+            <p role="status" className="mt-9 max-w-[460px] border border-cream/25 px-5 py-4 font-display text-xl italic">
+              {state.message}
+            </p>
+          ) : (
           <form
-            onSubmit={(e) => e.preventDefault()}
+            action={action}
             className="mt-9 flex w-full max-w-[460px] items-center gap-2 border border-cream/25 bg-cream p-1.5"
           >
             <label htmlFor="join-email" className="sr-only">
               Email address
             </label>
+            <input type="hidden" name="source" value="home" />
+            <input name="company" tabIndex={-1} autoComplete="off" aria-hidden className="absolute left-[-9999px] h-px w-px" />
             <input
               id="join-email"
+              name="email"
               type="email"
               required
               placeholder="you@email.com"
@@ -41,12 +56,16 @@ export default function JoinList() {
             />
             <button
               type="submit"
-              className="shrink-0 bg-ink px-6 py-3 text-xs font-semibold uppercase tracking-[0.16em] text-cream transition-colors hover:bg-gold-deep"
+              disabled={pending}
+              className="shrink-0 bg-ink px-6 py-3 text-xs font-semibold uppercase tracking-[0.16em] text-cream transition-colors hover:bg-ink-soft"
             >
-              Join
+              {pending ? "…" : "Join"}
             </button>
           </form>
-          <p className="mt-3 text-xs text-cream/50">Unsubscribe anytime.</p>
+          )}
+          <p role={state.status === "error" ? "alert" : undefined} className="mt-3 text-xs text-cream/50">
+            {state.status === "error" ? state.message : "Unsubscribe anytime."}
+          </p>
         </div>
       </div>
     </section>

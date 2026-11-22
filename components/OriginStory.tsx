@@ -24,14 +24,14 @@ export default function OriginStory() {
         </div>
 
         <div>
-          <p className="eyebrow text-gold-deep">Our story</p>
+          <p className="eyebrow text-ink">Our story</p>
           <h2 className="font-display mt-5 text-[clamp(2.2rem,4.6vw,3.9rem)] text-ink">
             It began as a name
             <br />
             my father called me.
           </h2>
 
-          <blockquote className="my-10 border-l border-gold pl-6">
+          <blockquote className="my-10 border-l border-ink pl-6">
             <p className="font-yoruba text-[clamp(1.25rem,2.2vw,1.75rem)] italic text-ink">
               “OLÒGE of Africa, ẹni kankan lo kù àbí bó jẹ́ mọ́?”
             </p>

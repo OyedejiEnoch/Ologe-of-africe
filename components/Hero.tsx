@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-// Cover hero: two photographs crossfade on their own (no video). The frame
+// Cover hero: an editorial diptych of two photographs (no video). The frame
 // opens through a narrow portrait aperture on cream (a door swinging open)
 // and widens to full bleed while the photos settle from a slight push-in. The OLÒGE wordmark then rises letter by letter along
 // the bottom edge, edge to edge, like a magazine masthead set at the foot.
@@ -16,18 +16,20 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 const WORD = ["O", "L", "Ò", "G", "E"];
 const EXPO = "expo.out";
 
-// The two hero photographs. Object positions keep each subject in frame when
-// a phone crops the wide image to a tall slice.
+// The hero diptych (Fabiana Filippi / Paloceras reference, 20 Nov): two
+// editorial eyewear portraits. On desktop they sit side by side, each filling
+// half the frame at full height, so neither portrait is stretched across a
+// wide screen. On phones only one fits, so they crossfade in turn.
 const SLIDES = [
   {
-    src: "/media/hero/hero-1.webp",
-    alt: "Four women in richly patterned African dress and headwraps, styling a green gele",
-    position: "object-[58%_30%] md:object-[50%_30%]",
+    src: "/media/hero/hero-gold-sunglasses.webp",
+    alt: "A woman in tortoiseshell sunglasses and a gold collar, lit by low sun",
+    position: "object-[38%_18%] md:object-[50%_22%]",
   },
   {
-    src: "/media/hero/hero-2.webp",
-    alt: "A woman in a wide woven hat and a patterned blazer, against a dark studio backdrop",
-    position: "object-[50%_20%] md:object-[70%_20%]",
+    src: "/media/hero/hero-cat-eye.webp",
+    alt: "A woman in black cat-eye sunglasses with gold temples against a warm ground",
+    position: "object-[50%_20%] md:object-[50%_24%]",
   },
 ];
 const HOLD_MS = 5500; // time each photo stays before the next fades in
@@ -41,7 +43,8 @@ export default function Hero() {
   // Advance on a timer. Skipped for reduced motion (first photo stays put) and
   // paused while the tab is hidden so it never jumps ahead on return.
   useEffect(() => {
-    if (reduced) return;
+    // Phones only: desktop shows both photos side by side.
+    if (reduced || window.matchMedia("(min-width: 768px)").matches) return;
     let timer: number | undefined;
     const start = () => {
       timer = window.setInterval(() => setActive((i) => (i + 1) % SLIDES.length), HOLD_MS);
@@ -132,19 +135,18 @@ export default function Hero() {
         style={{ transformOrigin: "center 42%" }}
       >
         <div className="hero-aperture absolute inset-0 overflow-hidden bg-ink">
-          {/* Both photos stay mounted and stacked; only opacity changes, so the
-              crossfade never waits on a download. The one on show settles from a
-              slow push-in; the one leaving eases back out underneath. */}
-          <div className="hero-slides absolute inset-0">
+          {/* Both photos stay mounted. Phones stack them and crossfade (only
+              opacity changes, so it never waits on a download); md+ lays them
+              side by side with a hairline of white between, both always on. */}
+          <div className="hero-slides absolute inset-0 md:grid md:grid-cols-2 md:gap-[3px] md:bg-cream">
             {SLIDES.map((slide, i) => (
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 key={slide.src}
                 src={slide.src}
                 alt={slide.alt}
-                aria-hidden={i !== active}
                 fetchPriority={i === 0 ? "high" : "auto"}
-                className={`absolute inset-0 h-full w-full object-cover transition-[opacity,transform] ease-out motion-reduce:transition-none ${slide.position} ${
+                className={`absolute inset-0 h-full w-full object-cover ${slide.position} transition-[opacity,transform] ease-out motion-reduce:transition-none md:relative md:inset-auto md:scale-100! md:opacity-100! ${
                   i === active
                     ? "scale-100 opacity-100 duration-[1600ms,7000ms]"
                     : "scale-[1.06] opacity-0 duration-[1600ms,7000ms]"
@@ -158,6 +160,8 @@ export default function Hero() {
           <div className="hero-scrim pointer-events-none absolute inset-0">
             <div className="absolute inset-0 bg-ink/15" />
             <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-ink/55 to-transparent" />
+            {/* md+: a soft shade behind the tagline block on the left portrait. */}
+            <div className="absolute inset-y-0 left-0 hidden w-[46%] bg-gradient-to-r from-ink/45 via-ink/20 to-transparent md:block" />
             <div
               className="absolute inset-x-0 bottom-0 h-[72%]"
               style={{
@@ -179,7 +183,7 @@ export default function Hero() {
                 <a
                   data-magnetic
                   href="/shop"
-                  className="pressable group inline-flex min-h-12 items-center gap-3 rounded-full bg-cream px-7 text-xs font-medium uppercase tracking-[0.18em] text-ink hover:bg-gold hover:text-ink"
+                  className="pressable group inline-flex min-h-12 items-center gap-3 rounded-full bg-cream px-7 text-xs font-medium uppercase tracking-[0.18em] text-ink hover:bg-paper"
                 >
                   Shop the house
                   <svg aria-hidden width="14" height="14" viewBox="0 0 14 14" className="transition-transform duration-300 group-hover:translate-x-0.5">
@@ -188,7 +192,7 @@ export default function Hero() {
                 </a>
                 <a
                   href="/contact"
-                  className="inline-flex min-h-11 items-center text-xs font-medium uppercase tracking-[0.18em] text-cream/85 underline decoration-cream/40 underline-offset-[0.5em] transition-colors hover:text-cream hover:decoration-gold"
+                  className="inline-flex min-h-11 items-center text-xs font-medium uppercase tracking-[0.18em] text-cream/85 underline decoration-cream/40 underline-offset-[0.5em] transition-colors hover:text-cream hover:decoration-cream"
                 >
                   Enquire about a piece
                 </a>

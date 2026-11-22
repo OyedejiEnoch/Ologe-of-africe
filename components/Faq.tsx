@@ -1,15 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { SITE, orderHref } from "@/lib/site";
+import { orderHref } from "@/lib/site";
+import { useSite } from "@/components/SiteContext";
 
 // Two-column FAQ: heading pinned left, accordion right. Answers are drafts that
 // defer specifics (fees, timing, payment) to the chat until the client confirms
 // her actual policies. Doubles as the page's #contact anchor.
-const QUESTIONS = [
+const questions = (whatsapp: string) => [
   {
     q: "How do I place an order?",
-    a: SITE.whatsapp
+    a: whatsapp
       ? "Tap “Order on WhatsApp” on any piece, or message us directly. We’ll confirm it’s available, your total and delivery before anything is paid."
       : "WhatsApp ordering will open when the house contact number is confirmed. Once it opens, we’ll confirm availability, your total and delivery before anything is paid.",
   },
@@ -37,27 +38,29 @@ const QUESTIONS = [
 
 export default function Faq() {
   const [open, setOpen] = useState<number | null>(0);
+  const site = useSite();
+  const QUESTIONS = questions(site.whatsapp);
 
   return (
-    <section id="contact" className="bg-cream px-6 py-[var(--spacing-section)] md:px-10">
+    <section id="contact" className="bg-ivory px-6 py-[var(--spacing-section)] md:px-10">
       <div className="mx-auto grid max-w-[1400px] gap-14 md:grid-cols-[5fr_7fr] md:gap-20">
         <div className="md:sticky md:top-32 md:self-start">
-          <p className="eyebrow text-gold-deep">FAQ</p>
+          <p className="eyebrow text-ink">FAQ</p>
           <h2 className="font-display mt-4 text-[clamp(2.4rem,5vw,4.4rem)] text-ink">
             Good <em className="italic">questions.</em>
           </h2>
           <p className="mt-5 max-w-[34ch] text-ink-soft">
             Can’t find yours? Contact details will appear here when confirmed.
           </p>
-          {SITE.whatsapp ? (
+          {site.whatsapp ? (
             <a
-              href={orderHref()}
+              href={orderHref(undefined, site.whatsapp)}
               className="mt-8 inline-flex min-h-12 items-center rounded-full bg-ink px-7 py-3.5 text-xs font-semibold uppercase tracking-[0.16em] text-cream"
             >
               Message us
             </a>
           ) : (
-            <p className="mt-8 border-l border-gold pl-5 text-sm text-ink-soft">WhatsApp details are coming soon.</p>
+            <p className="mt-8 border-l border-ink pl-5 text-sm text-ink-soft">WhatsApp details are coming soon.</p>
           )}
         </div>
 
@@ -78,7 +81,7 @@ export default function Faq() {
                   </span>
                   <span
                     aria-hidden
-                    className={`text-2xl leading-none text-gold-deep transition-transform duration-500 ${
+                    className={`text-2xl leading-none text-muted transition-transform duration-500 ${
                       isOpen ? "rotate-45" : ""
                     }`}
                   >

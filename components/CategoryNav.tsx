@@ -1,17 +1,19 @@
 import Link from "next/link";
-import { CATEGORY_KEYS, CATEGORY_LABEL, PRODUCTS, productsByCategory, type CategoryKey } from "@/lib/catalog";
+import { CATEGORY_KEYS, CATEGORY_LABEL, productsByCategory, type CategoryKey } from "@/lib/catalog";
+import { getProducts } from "@/lib/cms";
 
 // Range tabs for the shop: large serif labels with a true piece count beside
 // each, sticky under the site nav so the visitor can hop ranges mid-scroll.
 // Ranges still being chosen show their count as "soon" rather than a bare 0.
-export default function CategoryNav({ active }: { active?: CategoryKey | "all" }) {
+export default async function CategoryNav({ active }: { active?: CategoryKey | "all" }) {
+  const products = await getProducts();
   const links = [
-    { key: "all" as const, label: "All pieces", href: "/shop", count: PRODUCTS.length },
+    { key: "all" as const, label: "All pieces", href: "/shop", count: products.length },
     ...CATEGORY_KEYS.map((key) => ({
       key,
       label: CATEGORY_LABEL[key],
       href: `/shop/${key}`,
-      count: productsByCategory(key).length,
+      count: productsByCategory(key, products).length,
     })),
   ];
 
@@ -33,7 +35,7 @@ export default function CategoryNav({ active }: { active?: CategoryKey | "all" }
               }`}
             >
               {link.label}
-              <sup className="font-body text-[0.6rem] tabular-nums tracking-[0.12em] text-gold-deep">
+              <sup className="font-body text-[0.6rem] tabular-nums tracking-[0.12em] text-muted">
                 {link.count > 0 ? String(link.count).padStart(2, "0") : "soon"}
               </sup>
               {selected && <span className="absolute inset-x-0 bottom-0 h-[2px] bg-ink" />}

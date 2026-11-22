@@ -23,7 +23,7 @@ export default function ProductPlate({
     >
       <Corners className="scale-[0.92] opacity-0 transition-[opacity,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-100 group-hover:opacity-100 group-focus-visible:scale-100 group-focus-visible:opacity-100" />
       <div className="flex items-baseline justify-between">
-        <span className="font-body text-[0.65rem] tabular-nums tracking-[0.2em] text-gold-deep">
+        <span className="font-body text-[0.65rem] tabular-nums tracking-[0.2em] text-muted">
           {String(index + 1).padStart(2, "0")}
         </span>
         <span className="eyebrow text-[0.6rem]">{CATEGORY_LABEL[p.category]}</span>

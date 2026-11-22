@@ -45,7 +45,7 @@ export default function Footer() {
       <div className="mx-auto grid max-w-[1400px] gap-12 px-6 pt-24 md:grid-cols-[1fr_1.4fr_1fr] md:px-10">
         <div>
           <p className="font-display text-3xl">OLÒGE</p>
-          <p className="eyebrow mt-1 text-gold">of africa</p>
+          <p className="eyebrow mt-1 text-cream/55">of africa</p>
           <p className="mt-6 max-w-[30ch] text-sm text-cream/55">
             Fashion meets grace, with little to no effort.
           </p>
@@ -58,15 +58,15 @@ export default function Footer() {
               href={l.href}
               className="group text-xs font-medium uppercase tracking-[0.22em] text-cream/70 transition-colors hover:text-cream"
             >
-              <span className="text-cream/25 transition-colors group-hover:text-gold">[</span>
+              <span className="text-cream/25 transition-colors group-hover:text-cream">[</span>
               &nbsp;{l.label}&nbsp;
-              <span className="text-cream/25 transition-colors group-hover:text-gold">]</span>
+              <span className="text-cream/25 transition-colors group-hover:text-cream">]</span>
             </a>
           ))}
         </nav>
 
         <p className="font-display text-[clamp(1.6rem,2.6vw,2.2rem)] italic md:text-right">
-          Dress with <span className="text-gold">grace.</span>
+          Dress with grace.
         </p>
       </div>
 

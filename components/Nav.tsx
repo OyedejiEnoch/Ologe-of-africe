@@ -3,7 +3,8 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { usePathname } from "next/navigation";
 import { CATEGORY_KEYS, CATEGORY_LABEL } from "@/lib/catalog";
-import { SITE, orderHref } from "@/lib/site";
+import { orderHref } from "@/lib/site";
+import { useSite } from "@/components/SiteContext";
 
 const LINKS = [
   { label: "Shop", href: "/shop" },
@@ -17,6 +18,7 @@ const SMOOTH = "cubic-bezier(0.16, 1, 0.3, 1)";
 const ORIGIN = "calc(100% - 2.1rem) 2.6rem";
 
 export default function Nav() {
+  const site = useSite();
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -80,9 +82,9 @@ export default function Nav() {
   }, [menuOpen]);
 
   // Over the hero the bar is transparent with light type; once past it, a white
-  // bar with dark type. With the menu open it is transparent over black.
+  // bar with dark type. With the menu open it is transparent over the white menu.
   const onHome = pathname === "/";
-  const light = menuOpen || (onHome && !scrolled);
+  const light = !menuOpen && onHome && !scrolled;
   const solid = !menuOpen && (!onHome || scrolled);
   const hideLogo = onHome && !scrolled && !menuOpen;
 
@@ -111,13 +113,11 @@ export default function Nav() {
             hideLogo ? "pointer-events-none opacity-0" : "opacity-100"
           }`}
         >
-          <span className={`font-display text-2xl tracking-tight transition-colors duration-300 ${menuOpen ? "text-cream" : "text-ink"}`}>
+          <span className={`font-display text-2xl tracking-tight transition-colors duration-300 text-ink`}>
             OLÒGE
           </span>
           <span
-            className={`eyebrow mt-1 text-[0.55rem] tracking-[0.4em] transition-colors duration-300 ${
-              menuOpen ? "!text-gold" : "!text-gold-deep"
-            }`}
+            className="eyebrow mt-1 text-[0.55rem] tracking-[0.4em] !text-muted"
           >
             of africa
           </span>
@@ -128,7 +128,7 @@ export default function Nav() {
             <li key={link.label}>
               <a
                 href={link.href}
-                className={`text-sm font-medium transition-colors duration-200 ${
+                className={`text-[0.7rem] font-medium uppercase tracking-[0.2em] transition-colors duration-200 ${
                   light
                     ? "text-cream/90 hover:text-cream"
                     : "text-ink-soft hover:text-ink"
@@ -194,7 +194,7 @@ export default function Nav() {
       aria-label="Site menu"
       inert={!menuOpen}
       data-lenis-prevent
-      className="fixed inset-0 z-[70] overflow-y-auto overscroll-contain bg-black text-cream md:hidden"
+      className="fixed inset-0 z-[70] overflow-y-auto overscroll-contain bg-cream text-ink md:hidden"
       style={{
         clipPath: `circle(${menuOpen ? "150%" : "0%"} at ${ORIGIN})`,
         visibility: menuOpen ? "visible" : "hidden",
@@ -203,27 +203,17 @@ export default function Nav() {
           : "clip-path 520ms cubic-bezier(0.7, 0, 0.84, 0), visibility 0s linear 520ms",
       }}
     >
-      {/* A faint portrait rising from the foot keeps the black from feeling empty. */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src="/media/hero/hero-2.webp"
-        alt=""
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-[58%] w-full object-cover object-[62%_18%] opacity-[0.24]"
-        style={{ maskImage: "linear-gradient(to top, black 35%, transparent)", WebkitMaskImage: "linear-gradient(to top, black 35%, transparent)" }}
-      />
-
       <div className="relative flex min-h-full flex-col px-6 pb-[max(2rem,env(safe-area-inset-bottom))] pt-28">
         <nav aria-label="Mobile navigation">
-          <ul className="border-t border-white/10">
+          <ul className="border-t border-line">
             {LINKS.map((link, i) => (
-              <li key={link.label} className="overflow-hidden border-b border-white/10">
+              <li key={link.label} className="overflow-hidden border-b border-line">
                 <a
                   href={link.href}
                   onClick={() => setMenuOpen(false)}
-                  className="group flex min-h-[4.5rem] items-center gap-4 py-3 transition-colors duration-200 active:text-gold"
+                  className="group flex min-h-[4.5rem] items-center gap-4 py-3 transition-colors duration-200 active:text-ink-soft"
                 >
-                  <span className="w-7 shrink-0 font-body text-[0.65rem] tabular-nums tracking-[0.2em] text-gold" style={fade(i)}>
+                  <span className="w-7 shrink-0 font-body text-[0.65rem] tabular-nums tracking-[0.2em] text-muted" style={fade(i)}>
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <span
@@ -232,7 +222,7 @@ export default function Nav() {
                   >
                     {link.label}
                   </span>
-                  <span aria-hidden className="ml-auto text-xl text-white/35 transition-transform duration-300 group-active:translate-x-1" style={fade(i)}>
+                  <span aria-hidden className="ml-auto text-xl text-ink/30 transition-transform duration-300 group-active:translate-x-1" style={fade(i)}>
                     →
                   </span>
                 </a>
@@ -242,14 +232,14 @@ export default function Nav() {
         </nav>
 
         <div className="mt-10" style={fade(LINKS.length)}>
-          <p className="eyebrow !text-white/55">Shop by range</p>
+          <p className="eyebrow !text-muted">Shop by range</p>
           <ul className="mt-4 flex flex-wrap gap-2">
             {CATEGORY_KEYS.map((key) => (
               <li key={key}>
                 <a
                   href={`/shop/${key}`}
                   onClick={() => setMenuOpen(false)}
-                  className="inline-flex min-h-11 items-center rounded-full border border-white/20 px-4 text-[0.7rem] font-medium uppercase tracking-[0.16em] text-white/85 transition-colors duration-200 active:border-gold active:text-gold"
+                  className="inline-flex min-h-11 items-center rounded-full border border-line px-4 text-[0.7rem] font-medium uppercase tracking-[0.16em] text-ink transition-colors duration-200 active:border-ink"
                 >
                   {CATEGORY_LABEL[key]}
                 </a>
@@ -259,15 +249,15 @@ export default function Nav() {
         </div>
 
         <div className="mt-auto pt-12" style={fade(LINKS.length + 1)}>
-          <p className="max-w-[22ch] font-display text-[1.4rem] italic leading-[1.15] text-white/90">
+          <p className="max-w-[22ch] font-display text-[1.4rem] italic leading-[1.15] text-ink">
             Fashion meets grace, with little to no effort.
           </p>
           <a
-            href={orderHref()}
+            href={orderHref(undefined, site.whatsapp)}
             onClick={() => setMenuOpen(false)}
-            className="mt-6 flex min-h-14 items-center justify-between gap-4 rounded-full bg-cream px-7 text-xs font-medium uppercase tracking-[0.18em] text-ink transition-colors duration-200 active:bg-gold"
+            className="mt-6 flex min-h-14 items-center justify-between gap-4 rounded-full bg-ink px-7 text-xs font-medium uppercase tracking-[0.18em] text-cream transition-colors duration-200 active:bg-ink-soft"
           >
-            {SITE.whatsapp ? "Chat on WhatsApp" : "Enquire about a piece"}
+            {site.whatsapp ? "Chat on WhatsApp" : "Enquire about a piece"}
             <span aria-hidden>→</span>
           </a>
         </div>

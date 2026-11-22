@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { orderHref } from "@/lib/site";
+import { useSite } from "@/components/SiteContext";
 import Corners from "@/components/Corners";
 
 // Three ordering chapters. Step one is a quiet product plate; steps two and
@@ -17,6 +18,7 @@ const CHAT = [
 ] as const;
 
 export default function HowToOrder() {
+  const site = useSite();
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -41,7 +43,7 @@ export default function HowToOrder() {
     <section className="overflow-x-clip bg-cream px-6 py-[var(--spacing-section)] md:px-10">
       <div ref={ref} className="mx-auto max-w-[1200px]">
         <div className="max-w-[720px]">
-          <p className="eyebrow text-gold-deep">How to order</p>
+          <p className="eyebrow text-ink">How to order</p>
           <h2 className="font-display mt-4 text-[clamp(2.2rem,4.6vw,4rem)] text-ink">
             As easy as <em className="italic">sending a message.</em>
           </h2>
@@ -68,7 +70,7 @@ export default function HowToOrder() {
           <div className="grid md:min-h-[700px] md:grid-cols-[0.82fr_1.18fr]">
             <div className="flex flex-col justify-between p-8 md:p-16">
               <div>
-                <p className="eyebrow text-gold">Step 02 · Private order desk</p>
+                <p className="eyebrow text-cream/55">Step 02 · Private order desk</p>
                 <h3 className="font-display mt-6 max-w-[9ch] text-[clamp(2.5rem,5vw,4.8rem)] leading-[0.94] text-cream">
                   A conversation, not a checkout.
                 </h3>
@@ -80,8 +82,8 @@ export default function HowToOrder() {
 
               <div className="mt-12 border-t border-cream/15 pt-7 md:mt-16">
                 <a
-                  href={orderHref()}
-                  className="inline-flex items-center gap-5 bg-cream px-7 py-4 text-xs font-semibold uppercase tracking-[0.18em] text-ink transition-colors hover:bg-gold"
+                  href={orderHref(undefined, site.whatsapp)}
+                  className="inline-flex items-center gap-5 bg-cream px-7 py-4 text-xs font-semibold uppercase tracking-[0.18em] text-ink transition-colors hover:bg-paper"
                 >
                   Start a chat <span aria-hidden>↗</span>
                 </a>
@@ -97,7 +99,7 @@ export default function HowToOrder() {
             >
               <div className="flex items-center justify-between border-b border-ink/10 px-6 py-5 md:px-9">
                 <div className="flex items-center gap-3">
-                  <span className="grid h-10 w-10 place-items-center rounded-full bg-ink font-display text-sm text-gold">
+                  <span className="grid h-10 w-10 place-items-center rounded-full bg-ink font-display text-sm text-cream">
                     O
                   </span>
                   <div className="leading-tight">
@@ -107,7 +109,7 @@ export default function HowToOrder() {
                     </p>
                   </div>
                 </div>
-                <span className="h-2 w-2 rounded-full bg-gold" title="Available" />
+                <span className="h-2 w-2 rounded-full bg-emerald-600" title="Available" />
               </div>
 
               <div className="relative flex flex-1 flex-col px-5 py-7 md:px-9 md:py-9">
@@ -175,7 +177,7 @@ export default function HowToOrder() {
           </div>
 
           <div className="relative z-10 flex min-h-[700px] flex-col justify-between px-8 pb-10 pt-28 md:col-start-1 md:row-start-1 md:min-h-[780px] md:px-[max(4rem,8vw)] md:pb-16">
-            <p className="eyebrow text-gold">Step 03 · The arrival</p>
+            <p className="eyebrow text-cream/55">Step 03 · The arrival</p>
 
             <div className="max-w-[620px]">
               <h3 className="font-display max-w-[11ch] text-[clamp(3rem,6vw,5.5rem)] leading-[0.92]">
@@ -218,7 +220,7 @@ function Step({
       className="mt-24 grid items-center gap-12 border border-line bg-paper/50 p-8 md:mt-40 md:grid-cols-2 md:gap-16 md:p-16"
     >
       <div>
-        <p className="eyebrow text-gold-deep">Step {n}</p>
+        <p className="eyebrow text-ink">Step {n}</p>
         <h3 className="font-display mt-4 text-[clamp(1.9rem,3.4vw,3rem)] text-ink">{title}</h3>
         <p className="mt-5 max-w-[42ch] text-ink-soft">{copy}</p>
         {cta && (
@@ -238,7 +240,7 @@ function Step({
 function DeliveryNote({ children, n }: { children: React.ReactNode; n: string }) {
   return (
     <div className="border-b border-cream/25 py-4 last:border-b-0 sm:border-b-0 sm:border-r sm:px-5 sm:first:pl-0 sm:last:border-r-0">
-      <p className="text-[0.62rem] font-medium uppercase tracking-[0.18em] text-gold">{n}</p>
+      <p className="text-[0.62rem] font-medium uppercase tracking-[0.18em] text-cream/55">{n}</p>
       <p className="mt-2 text-sm text-cream/85">{children}</p>
     </div>
   );

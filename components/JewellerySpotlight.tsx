@@ -32,7 +32,7 @@ export default function JewellerySpotlight() {
     <section ref={sectionRef} aria-label="A closer look at OLÒGE jewellery" className="overflow-hidden bg-paper text-ink">
       <div className="mx-auto grid max-w-[1400px] items-center gap-9 px-6 py-14 md:grid-cols-12 md:gap-12 md:px-10 md:py-24">
         <div className="relative z-10 md:col-span-5">
-          <p className="eyebrow text-gold-deep">The finishing gesture</p>
+          <p className="eyebrow text-ink">The finishing gesture</p>
           <h2 className="font-display mt-5 max-w-[10ch] text-[clamp(2.7rem,5.4vw,5.8rem)] leading-[0.95] tracking-[-0.035em]">
             A little drama.<br /><em className="italic">Worn your way.</em>
           </h2>

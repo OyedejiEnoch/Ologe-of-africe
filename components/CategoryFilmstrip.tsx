@@ -37,9 +37,9 @@ export default function CategoryFilmstrip() {
   }, []);
 
   return (
-    <section ref={sectionRef} id="shop" className="relative overflow-hidden bg-cream py-20 md:py-0">
+    <section ref={sectionRef} id="shop" className="relative overflow-hidden bg-ivory py-20 md:py-0">
       <div className="px-6 md:pointer-events-none md:absolute md:left-10 md:top-28 md:z-10 md:px-0">
-        <p className="eyebrow text-gold-deep">The House</p>
+        <p className="eyebrow text-ink">The House</p>
         <h2 className="font-display mt-2 text-[clamp(1.6rem,3vw,2.6rem)] text-ink">
           Browse every range
         </h2>
@@ -63,7 +63,7 @@ export default function CategoryFilmstrip() {
             >
               {/* Multiply sits the white/grey studio grounds into the ivory page
                   instead of punching bright rectangles out of it. */}
-              <div className="overflow-hidden bg-cream">
+              <div className="overflow-hidden bg-ivory">
                 <img
                   src={c.image}
                   alt={c.label}

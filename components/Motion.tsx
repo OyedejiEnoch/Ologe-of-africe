@@ -20,7 +20,7 @@ import { SplitText } from "gsap/SplitText";
 //   [data-plate]              product plates rise in batches
 //   [data-magnetic]           leans toward the pointer (fine pointers only)
 //
-// Plus a hairline gold scroll-progress bar across the top of the window.
+// Plus a hairline ink scroll-progress bar across the top of the window.
 const EASE = "expo.out";
 const OFF = "[data-motion-off], .hero";
 
@@ -172,7 +172,7 @@ export default function Motion() {
     <div
       ref={barRef}
       aria-hidden
-      className="pointer-events-none fixed inset-x-0 top-0 z-[90] h-[2px] origin-left scale-x-0 bg-gold motion-reduce:hidden"
+      className="pointer-events-none fixed inset-x-0 top-0 z-[90] h-[2px] origin-left scale-x-0 bg-ink motion-reduce:hidden"
     />
   );
 }
